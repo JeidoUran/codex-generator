@@ -232,7 +232,7 @@ for (let i = 0; i < lines.length; i++) {
         <div class="spell-info-block"><img src="${iconPath}/range.png" title="Portée" class="spell-info-icon"> ${range}</div>
         <div class="spell-info-block"><img src="${iconPath}/component.png" title="Composants" class="spell-info-icon components"> ${comp}</div>
         <div class="spell-info-block"><img src="${iconPath}/duration.png" title="Durée" class="spell-info-icon"> ${duration}</div>
-        <div class="spell-info-block"><img src="${iconPath}/save.png" title="Jet de sauvegarde" class="spell-info-icon"> ${save}</div>
+        <div class="spell-info-block"><img src="${iconPath}/save.png" title="Type de jet de sauvegarde ou attaque" class="spell-info-icon"> ${save}</div>
       </div>`);
     } else {
       currentSort.description.push(line);
