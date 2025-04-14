@@ -1,18 +1,31 @@
-// Script Node.js pour générer regles/classes/index.html à partir des fichiers HTML de chaque classe
 const fs = require("fs");
 const path = require("path");
 const cheerio = require("cheerio");
 
-const classesDir = path.join(__dirname, "regles", "classes");
+// Utilitaire de slug
+const slugify = str => str.normalize("NFD")
+  .replace(/\p{Diacritic}/gu, "")
+  .toLowerCase()
+  .replace(/[^a-z0-9]+/g, "-")
+  .replace(/(^-|-$)/g, "");
+
+// Ordre voulu
+const ordreClasses = [
+  "Souverain", "Envouteur", "Impérial", "Lansquenet",
+  "Mage guerrier", "Moine", "Necromancien", "Shogun",
+  "Heraut", "Dragoon", "Vagabond", "Troubadour", "Pistolero"
+].map(slugify);
+
+const classesDir = path.join(__dirname, "../output/classes");
 const outputPath = path.join(classesDir, "index.html");
 
-const footerPath = path.join(__dirname, "footer.html"); // adapte le chemin si besoin
+const footerPath = path.join(__dirname, "footer.html");
 const footerHTML = fs.readFileSync(footerPath, "utf8");
 
 const classFiles = fs.readdirSync(classesDir)
   .filter(f => f.endsWith(".html") && f !== "index.html");
 
-let cartesHtml = "";
+const classCards = [];
 
 for (const file of classFiles) {
   const filePath = path.join(classesDir, file);
@@ -20,17 +33,30 @@ for (const file of classFiles) {
   const $ = cheerio.load(content);
 
   const titre = $("title").text().trim() || file.replace(/\.html$/, "");
+  const slug = slugify(titre);
   const desc = $('meta[name="description"]').attr("content") || "Cette classe n'a pas encore de description.";
   const imageName = file.replace(/\.html$/, ".png");
   const imagePath = `../../assets/images/class-icons/${imageName}`;
 
-  cartesHtml += `
-  <a href="${file}" class="carte-lien class-card" data-nom="${titre.toLowerCase()}">
-    <img src="${imagePath}" alt="${titre}" class="image class-icon">
-    <h2>${titre}</h2>
-    <p>${desc}</p>
-  </a>`;
+  classCards.push({
+    slug,
+    html: `
+      <a href="${file}" class="carte-lien class-card" data-nom="${titre.toLowerCase()}">
+        <img src="${imagePath}" alt="${titre}" class="image class-icon">
+        <h2>${titre}</h2>
+        <p>${desc}</p>
+      </a>`
+  });
 }
+
+// Tri par ordre voulu
+classCards.sort((a, b) => {
+  const indexA = ordreClasses.indexOf(a.slug);
+  const indexB = ordreClasses.indexOf(b.slug);
+  return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
+});
+
+const cartesHtml = classCards.map(c => c.html).join("\n");
 
 const finalHtml = `<!DOCTYPE html>
 <html lang="fr">
@@ -40,25 +66,29 @@ const finalHtml = `<!DOCTYPE html>
     <link rel="icon" href="../../favicon.png" type="image/png">
     <link rel="stylesheet" href="../../style.css">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   </head>
   <body>
     <canvas id="particles"></canvas>
     <header class="codex-header">
       <div class="header-top">
-          <h1><img src="../../assets/images/green-book.png" class="image codex-image-header"> Index des Classes</h1>        <div class="header-links" style="text-align: center; margin-top: 1rem; margin-bottom: 2rem;">
-          <a href="/" class="carte-lien" style="display: inline-block; max-width: 300px;">← Retour au Codex</a>
-        </div>
+        <h1><img src="../../assets/images/green-book.png" class="image codex-image-header"> Index des Classes</h1>
       </div>
       <p class="sous-titre">Consultez les profils des classes jouables du JDR</p>
-    </header>
-    <div class="fixed-header-links">
-      <a href="/" class="carte-lien" style="display: inline-block; max-width: 300px;">← Retour au Codex</a>
+      <div class="fixed-header-links">
+      <a href="/" class="carte-lien" style="display: inline-block; max-width: 300px;"><i class="fa-solid fa-arrow-left"></i> Retour au Codex</a>
     </div>
+    </header>
     <main class="accueil">
-      <input type="text" id="search-bar" placeholder="Rechercher une classe..."> ${cartesHtml}
+    <div id="search-wrapper">
+      <input type="text" id="search-bar" placeholder="Rechercher une classe...">
+    </div>
+      ${cartesHtml}
     </main>
-    <button id="backToTop" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" aria-label="Retour en haut">↑ Retour en haut</button> ${footerHTML} <script src="../../particles.js"></script>
+    <button id="backToTop" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" aria-label="Retour en haut"><i class="fa-solid fa-arrow-up"></i> Retour en haut</button>
+    ${footerHTML}
+    <script src="../../particles.js"></script>
     <script>
       const searchInput = document.getElementById("search-bar");
       const cards = document.querySelectorAll(".class-card");
@@ -68,8 +98,7 @@ const finalHtml = `<!DOCTYPE html>
           card.style.display = card.dataset.nom.includes(val) ? "block" : "none";
         });
       });
-    </script>
-    <script>
+
       window.addEventListener('scroll', () => {
         document.getElementById('backToTop').classList.toggle('show', window.scrollY > 300);
       });
