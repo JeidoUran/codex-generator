@@ -44,6 +44,14 @@ const formatCout = (val) => {
   }
 };
 
+const spellSectionIcons = {
+  "sorts mineurs": "cantrip.png",
+  "sorts de premier niveau": "spell-slot1.png",
+  "sorts de second niveau": "spell-slot2.png",
+  "sorts de troisième niveau": "spell-slot3.png"
+};
+
+
 const classIcons = {
   "Souverain": "sovereign",
   "Envouteur": "hexer",
@@ -95,6 +103,8 @@ let specialisations = [];
 let currentAptitude = null;
 let currentSpec = null;
 let currentSpecAptitude = null;
+let currentSortSection = null;
+let sortSections = [];
 let section = null;
 
 for (let i = 0; i < lines.length; i++) {
@@ -113,8 +123,35 @@ for (let i = 0; i < lines.length; i++) {
     section = "aptitudes";
   } else if (line.toLowerCase() === "## spécialisations") {
     section = "specialisations";
+  } else if (line.startsWith("## ")) {
+    const titre = line.replace(/^##\s+/, "").trim();
+    const id = slugify(titre);
+    const lower = titre.toLowerCase();
+  
+    if (spellSectionIcons[lower]) {
+      currentSortSection = {
+        id,
+        titre,
+        sorts: []
+      };
+      sortSections.push(currentSortSection);
+      section = "sorts"; // nouvelle catégorie logique
+      continue;
+    } else {
+      section = null;
+      currentSortSection = null;
+    }
   } else if (line.startsWith("### ")) {
-    if (section === "aptitudes") {
+    const nom = line.replace("### ", "").trim();
+    if (section === "sorts" && currentSortSection) {
+      currentSortSection.sorts.push({
+        id: slugify(nom),
+        nom,
+        icone: "",
+        cout: "",
+        description: []
+      });
+    } else if (section === "aptitudes") {  
       if (currentAptitude) aptitudes.push(currentAptitude);
       currentAptitude = {
         id: slugify(line.replace("### ", "")),
@@ -148,10 +185,16 @@ for (let i = 0; i < lines.length; i++) {
   } else if (line.toLowerCase().startsWith("icone:")) {
     if (section === "aptitudes" && currentAptitude) currentAptitude.icone = line.split(":")[1].trim();
     if (section === "specialisations" && currentSpecAptitude) currentSpecAptitude.icone = line.split(":")[1].trim();
+    if (section === "sorts" && currentSortSection?.sorts?.length > 0) {
+      currentSortSection.sorts[currentSortSection.sorts.length - 1].icone = line.split(":")[1].trim();
+    }    
   } else if (line.toLowerCase().startsWith("coût:") || line.toLowerCase().startsWith("cout:")) {
     const rawCout = line.split(":")[1].trim();
     if (section === "aptitudes" && currentAptitude) currentAptitude.cout = formatCout(rawCout);
     if (section === "specialisations" && currentSpecAptitude) currentSpecAptitude.cout = formatCout(rawCout);
+    if (section === "sorts" && currentSortSection?.sorts?.length > 0) {
+      currentSortSection.sorts[currentSortSection.sorts.length - 1].cout = formatCout(rawCout);
+    }
   } else if (section === "details" && line.startsWith("- ")) {
     const detailMatch = line.match(/- \*\*(.+?)\*\*:? ?(.*)/);
     if (detailMatch) {
@@ -176,7 +219,26 @@ for (let i = 0; i < lines.length; i++) {
     currentAptitude.description.push(line);
   } else if (section === "specialisations" && currentSpecAptitude && line) {
     currentSpecAptitude.description.push(line);
-  }
+  } else if (section === "sorts" && currentSortSection?.sorts?.length > 0 && line) {
+    const currentSort = currentSortSection.sorts[currentSortSection.sorts.length - 1];
+    const dataMatch = line.match(/Temps d'incantation\s*:\s*(.+?),\s*Portée\s*:\s*(.+?),\s*Composants\s*:\s*(.+?),\s*Durée\s*:\s*(.+?),\s*Attaque\/Sauvegarde\s*:\s*(.+)/i);
+
+    if (dataMatch) {
+      const [_, cast, range, comp, duration, save] = dataMatch;
+      const iconPath = "../../assets/images/spell-details";
+    
+      currentSort.description.push(`<div class="spell-data-icons">
+        <div class="spell-info-block"><img src="${iconPath}/cast-time.png" title="Temps d'incantation" class="spell-info-icon cast-time"> ${cast}</div>
+        <div class="spell-info-block"><img src="${iconPath}/range.png" title="Portée" class="spell-info-icon"> ${range}</div>
+        <div class="spell-info-block"><img src="${iconPath}/component.png" title="Composants" class="spell-info-icon components"> ${comp}</div>
+        <div class="spell-info-block"><img src="${iconPath}/duration.png" title="Durée" class="spell-info-icon"> ${duration}</div>
+        <div class="spell-info-block"><img src="${iconPath}/save.png" title="Jet de sauvegarde" class="spell-info-icon"> ${save}</div>
+      </div>`);
+    } else {
+      currentSort.description.push(line);
+    }
+    
+  }  
 }
 if (currentAptitude) aptitudes.push(currentAptitude);
 if (currentSpecAptitude && currentSpec) currentSpec.aptitudes.push(currentSpecAptitude);
@@ -185,7 +247,7 @@ if (currentSpec) specialisations.push(currentSpec);
 const nomClasseSansAccent = nomClasse.normalize("NFD").replace(/\p{Diacritic}/gu, "");
 
 // Lecture du tableau de progression, si disponible
-const tablePath = path.join(__dirname, `./progressions/progression-${slugify(nomClasse)}.html`);
+const tablePath = path.resolve(__dirname, `../progressions/progression-${slugify(nomClasse)}.html`);
 let tableHTML = "";
 if (fs.existsSync(tablePath)) {
   tableHTML = fs.readFileSync(tablePath, "utf8");
@@ -200,10 +262,15 @@ const navLinks = [
     { href: `#${spec.id}`, label: spec.nom },
     ...spec.aptitudes.map(a => ({ href: `#${a.id}`, label: a.nom }))
   ]),
+  // Ajoute ici les sections de sorts AVANT la progression
+  ...sortSections.flatMap(section => [
+    { href: `#${section.id}`, label: section.titre },
+    ...section.sorts.map(sort => ({ href: `#${sort.id}`, label: sort.nom }))
+  ]),
   { href: "#progression-table", label: "Progression par niveau" }
 ];
 
-const sectionsPrincipales = ["#details", "#aptitudes", "#specialisations", "#progression-table", "#magierkaiser", "#arztkaiser", "#starkekaiser"];
+const sectionsPrincipales = ["#details", "#aptitudes", "#specialisations", "#sorts-mineurs", "#sorts-de-premier-niveau", "#sorts-de-second-niveau", "#sorts-de-troisieme-niveau", "#progression-table", "#magierkaiser", "#arztkaiser", "#starkekaiser", "#devouement-au-controle", "#devouement-a-la-restreinte", "#devouement-a-la-vengeance"];
 
 const navHTML = `\n<div class="class-nav">\n  ${navLinks.map(l => {
   const cls = sectionsPrincipales.includes(l.href) ? 'section-link' : 'sub-link';
@@ -245,6 +312,29 @@ const specialisationsHTML = specialisations.map(spec => `
     </div>
     </div>
   </section>`).join("\n");
+
+  const sortsHTML = sortSections.map(section => `
+    <section class="patch-section">
+      <div class="toggle-section">
+        <h2 class="patch-titre" id="${section.id}">
+          <img src="../../assets/images/action-costs/${spellSectionIcons[section.titre.toLowerCase()]}" class="image image-h2">
+          ${section.titre}
+          <button class="toggle-button" onclick="toggleSection(this)">▲</button>
+        </h2>
+    </div>
+    <div class="collapsible-content expanded">
+      <div class="patch-list">
+        ${section.sorts.map(s => `
+        <article id="${s.id}">
+        <h3>
+          <img src="${s.icone}" class="image skill-icon">
+          ${s.nom}
+          <span>${s.cout}</span>
+        </h3>
+          <p>${s.description.join(" ")}</p>
+        </article>`).join("\n")}
+      </div>
+    </section>`).join("\n");  
 
 const finalHtml = `<!DOCTYPE html>
 <html lang="fr">
@@ -299,7 +389,10 @@ const finalHtml = `<!DOCTYPE html>
       </section>
       <h2 class="patch-titre" id="specialisations">
         <img src="../../assets/images/notes-big.png" class="image image-h2"> Spécialisations
-      </h2> ${specialisationsHTML} ${tableHTML}
+      </h2>
+    ${specialisationsHTML}
+    ${sortsHTML}
+    ${tableHTML}
     </main>
     <button id="backToTop" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" aria-label="Retour en haut"><i class="fa-solid fa-arrow-up"></i> Retour en haut</button> ${footerHTML} <script>
       document.addEventListener("DOMContentLoaded", function() {
