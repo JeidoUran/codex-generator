@@ -40,88 +40,19 @@ const finalHtml = `<!DOCTYPE html>
     <link rel="icon" href="../../favicon.png" type="image/png">
     <link rel="stylesheet" href="../../style.css">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
-    <style>
-      .class-card {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        padding: 1rem;
-        margin: 1rem auto;
-        max-width: 800px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 8px;
-        background: rgba(255, 255, 255, 0.03);
-        transition: background 0.3s;
-      }
 
-      .class-card:hover {
-        background: rgba(255, 255, 255, 0.06);
-      }
-
-      .class-icon {
-        height: 64px;
-        width: 64px;
-      }
-
-      .class-card h2 {
-        width: 200px;
-        min-width: 200px;
-      }
-
-      .class-card p {
-        margin-left: 1.5rem;
-      }
-
-      #search-wrapper {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 1rem;
-        margin: 0rem auto 2rem;
-        flex-wrap: wrap;
-      }
-
-      #search-bar {
-        padding: 0.5rem 1rem;
-        font-size: 1.1rem;
-        font-size: 1rem;
-        font-family: 'Cinzel', serif;
-        border-radius: 8px;
-        border: 1px solid #88c0a9;
-        background: rgba(0, 0, 0, 0.3);
-        color: #e8ddc5;
-        width: 90%;
-        max-width: 400px;
-        font-family: 'Cinzel', serif;
-      }
-
-      #search-bar::placeholder {
-        font-family: 'Cinzel', serif;
-      }
-
-      .accueil {
-        margin-top: 1rem;
-      }
-
-      .return-link {
-        display: inline-block;
-        max-width: 300px;
-        white-space: nowrap;
-      }
-    </style>
   </head>
   <body>
     <canvas id="particles"></canvas>
     <header class="codex-header">
       <div class="header-top">
-        <h1>📘 Index des Classes</h1>
-        <div class="header-links" style="text-align: center; margin-top: 1rem; margin-bottom: 2rem;">
+          <h1><img src="../../assets/images/green-book.png" class="image codex-image-header"> Index des Classes</h1>        <div class="header-links" style="text-align: center; margin-top: 1rem; margin-bottom: 2rem;">
           <a href="/" class="carte-lien" style="display: inline-block; max-width: 300px;">← Retour au Codex</a>
         </div>
       </div>
       <p class="sous-titre">Consultez les profils des classes jouables du JDR</p>
     </header>
-    <div style="text-align: center; margin-top: 3rem;">
+    <div class="fixed-header-links">
       <a href="/" class="carte-lien" style="display: inline-block; max-width: 300px;">← Retour au Codex</a>
     </div>
     <main class="accueil">
