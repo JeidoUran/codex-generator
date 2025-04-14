@@ -359,9 +359,13 @@ const finalHtml = `<!DOCTYPE html>
           <a href="/" class="carte-lien" style="display: inline-block; max-width: 300px;"><i class="fa-solid fa-arrow-left"></i> Retour au Codex</a>
         </div>
       </div>
-      <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;"> ${images.slice(1).map(img => ` <div class="illustration-wrapper">
+      <div>
+      <div class="illustration-wrapper double">
+      ${images.slice(1).map(img => `
           <img src="${img}" alt="Illustration ${nomClasse}" class="illustration-classe">
-        </div> `).join("\n")} </div>
+        `).join("\n")} 
+        </div>
+        </div>
     </header>
     <main class="accueil">
       <section class="intro-collapsible click" id="intro">
