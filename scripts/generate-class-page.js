@@ -270,7 +270,7 @@ const navLinks = [
   { href: "#progression-table", label: "Progression par niveau" }
 ];
 
-const sectionsPrincipales = ["#details", "#aptitudes", "#specialisations", "#sorts-mineurs", "#sorts-de-premier-niveau", "#sorts-de-second-niveau", "#sorts-de-troisieme-niveau", "#progression-table", "#magierkaiser", "#arztkaiser", "#starkekaiser", "#devouement-au-controle", "#devouement-a-la-restreinte", "#devouement-a-la-vengeance"];
+const sectionsPrincipales = ["#details", "#aptitudes", "#specialisations", "#sorts-mineurs", "#sorts-de-premier-niveau", "#sorts-de-second-niveau", "#sorts-de-troisieme-niveau", "#progression-table", "#magierkaiser", "#arztkaiser", "#starkekaiser", "#devouement-au-controle", "#devouement-a-la-restreinte", "#devouement-a-la-vengeance", "#serment-de-destruction", "#serment-de-protection"];
 
 const navHTML = `\n<div class="class-nav">\n  ${navLinks.map(l => {
   const cls = sectionsPrincipales.includes(l.href) ? 'section-link' : 'sub-link';
