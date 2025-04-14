@@ -1,0 +1,20 @@
+{
+  "name": "codex-generator",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build-patch": "node scripts/convertPatch.js",
+    "build-index": "node scripts/generate_patch_index.js",
+    "build-classes": "node scripts/generate-class-index.js",
+    "build-single-class": "node scripts/generate-class-page.js",
+    "build-batch-class": "node scripts/generate-class-page-batch.js",
+    "build-batch-patch": "node scripts/convertPatch-batch.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "markdown-it": "^14.1.0"
+  }
+}
