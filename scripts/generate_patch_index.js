@@ -6,7 +6,7 @@ const cheerio = require("cheerio");
 const footerPath = path.join(__dirname, "footer.html"); // adapte le chemin si besoin
 const footerHTML = fs.readFileSync(footerPath, "utf8");
 
-const notesDir = path.join(__dirname, "notes");
+const notesDir = path.join(__dirname, "../output/notes");
 const outputPath = path.join(notesDir, "index.html");
 
 const patchFiles = fs.readdirSync(notesDir)
