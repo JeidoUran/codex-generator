@@ -95,7 +95,11 @@ const finalHtml = `<!DOCTYPE html>
       searchInput.addEventListener("input", e => {
         const val = e.target.value.toLowerCase();
         cards.forEach(card => {
-          card.style.display = card.dataset.nom.includes(val) ? "block" : "none";
+          if (card.dataset.nom.includes(val)) {
+            card.style.removeProperty("display");
+          } else {
+            card.style.display = "none";
+          }
         });
       });
 
