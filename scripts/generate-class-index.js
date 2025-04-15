@@ -41,7 +41,7 @@ for (const file of classFiles) {
   classCards.push({
     slug,
     html: `
-      <a href="${file}" class="carte-lien class-card" data-nom="${titre.toLowerCase()}">
+      <a href="${file}" class="carte-lien class-card" data-nom="${titre.toLowerCase()}" data-description="${desc.toLowerCase()}">
         <img src="${imagePath}" alt="${titre}" class="image class-icon">
         <h2>${titre}</h2>
         <p>${desc}</p>
@@ -94,7 +94,7 @@ const finalHtml = `<!DOCTYPE html>
       searchInput.addEventListener("input", e => {
         const val = e.target.value.toLowerCase();
         cards.forEach(card => {
-          if (card.dataset.nom.includes(val)) {
+          if (card.dataset.nom.includes(val) || card.dataset.description.includes(val)) {
             card.style.removeProperty("display");
           } else {
             card.style.display = "none";
