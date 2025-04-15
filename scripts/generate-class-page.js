@@ -270,7 +270,7 @@ const navLinks = [
   { href: "#progression-table", label: "Progression par niveau" }
 ];
 
-const sectionsPrincipales = ["#details", "#aptitudes", "#specialisations", "#sorts-mineurs", "#sorts-de-premier-niveau", "#sorts-de-second-niveau", "#sorts-de-troisieme-niveau", "#progression-table", "#magierkaiser", "#arztkaiser", "#starkekaiser", "#devouement-au-controle", "#devouement-a-la-restreinte", "#devouement-a-la-vengeance", "#serment-de-destruction", "#serment-de-protection", "#maitre-des-epees", "#maitre-des-haches", "#maitre-des-boucliers"];
+const sectionsPrincipales = ["#details", "#aptitudes", "#specialisations", "#sorts-mineurs", "#sorts-de-premier-niveau", "#sorts-de-second-niveau", "#sorts-de-troisieme-niveau", "#progression-table", "#magierkaiser", "#arztkaiser", "#starkekaiser", "#devouement-au-controle", "#devouement-a-la-restreinte", "#devouement-a-la-vengeance", "#serment-de-destruction", "#serment-de-protection", "#maitre-des-epees", "#maitre-des-haches", "#maitre-des-boucliers", "#pacte-de-l-evoqueur", "#pacte-du-courtier"];
 
 const navHTML = `\n<div class="class-nav">\n  ${navLinks.map(l => {
   const cls = sectionsPrincipales.includes(l.href) ? 'section-link' : 'sub-link';
@@ -378,15 +378,15 @@ const finalHtml = `<!DOCTYPE html>
         <ul class="image-list"> ${detailsHTML} </ul>
       </section>
       <section class="patch-section">
+          <div class="aptitude-search-container">
+            <input type="text" id="aptitude-search" placeholder="Rechercher une aptitude ou un sort..." />
+          </div>
         <div class="toggle-section">
           <h2 class="patch-titre" id="aptitudes">
             <img src="../../assets/images/notes-big.png" class="image image-h2"> Aptitudes de classe <button class="toggle-button" onclick="toggleSection(this)">▲</button>
           </h2>
         </div>
         <div class="collapsible-content expanded">
-          <div class="aptitude-search-container">
-            <input type="text" id="aptitude-search" placeholder="Rechercher une aptitude..." />
-          </div>
           <div class="patch-list"> ${aptitudesHTML} </div>
         </div>
       </section>
