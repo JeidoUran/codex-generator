@@ -24,7 +24,7 @@ for (const file of patchFiles) {
   const date = $(".sous-titre").text();
 
   cartesHtml += `
-  <a href="${file}" class="carte-lien large" data-patch="${file}">
+  <a href="${file}" class="carte-lien large patch" data-patch="${file}">
     <h2><img src="../assets/images/silver-scroll.png" class="image codex-silver-scroll-patch"> ${titre}</h2>
     <p>${date}</p>
     <span class="patch-nouveau" hidden><img src="../assets/images/exclam_mark.png" class="image new-patch"></span>
