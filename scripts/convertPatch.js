@@ -133,7 +133,7 @@ function renderSection(section) {
   return html;
 }
 
-const navigationHTML = `\n<nav class="patch-nav">\n  <ul>\n    ${navLinks.map(link => `<li><a href="#${link.id}"><span class="rune">✦</span> ${link.title}</a></li>`).join("\n    ")}\n  </ul>\n</nav>`;
+const navigationHTML = `\n<nav class="patch-nav">\n  <ul>\n    ${navLinks.map(link => `<li><a href="#${link.id}"><span class="rune"><img src="../assets/images/notes-big.png" class="image patch-nav-image"></span> ${link.title}</a></li>`).join("\n    ")}\n  </ul>\n</nav>`;
 
 const body = htmlSections.map(renderSection).join("\n");
 
