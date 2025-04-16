@@ -272,7 +272,8 @@ const navLinks = [
 
 const sectionsPrincipales = ["#details", "#aptitudes", "#specialisations", "#sorts-mineurs", "#sorts-de-premier-niveau", "#sorts-de-second-niveau", "#sorts-de-troisieme-niveau",
 "#progression-table", "#magierkaiser", "#arztkaiser", "#starkekaiser", "#devouement-au-controle", "#devouement-a-la-restreinte", "#devouement-a-la-vengeance", "#serment-de-destruction",
-"#serment-de-protection", "#maitre-des-epees", "#maitre-des-haches", "#maitre-des-boucliers", "#pacte-de-l-evoqueur", "#pacte-du-courtier", "#ecole-du-commandement", "#ecole-de-l-offense", "#ecole-du-seigneur-de-guerre"];
+"#serment-de-protection", "#maitre-des-epees", "#maitre-des-haches", "#maitre-des-boucliers", "#pacte-de-l-evoqueur", "#pacte-du-courtier", "#ecole-du-commandement", "#ecole-de-l-offense",
+"#ecole-du-seigneur-de-guerre", "#porteur-de-mort", "#garde-de-la-mort", "#voile-de-la-mort"];
 
 const navHTML = `\n<div class="class-nav">\n  ${navLinks.map(l => {
   const cls = sectionsPrincipales.includes(l.href) ? 'section-link' : 'sub-link';
