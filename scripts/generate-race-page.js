@@ -265,24 +265,6 @@ const finalHtml = `<!DOCTYPE html>
       
     </script>
     <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        const searchInput = document.getElementById("aptitude-search");
-        const aptitudeArticles = document.querySelectorAll("article");
-        searchInput.addEventListener("input", function() {
-          const value = searchInput.value.toLowerCase();
-          aptitudeArticles.forEach(article => {
-            const title = article.querySelector("h3")?.textContent?.toLowerCase() || "";
-            const content = article.textContent?.toLowerCase() || "";
-            if (title.includes(value) || content.includes(value)) {
-              article.style.display = "";
-            } else {
-              article.style.display = "none";
-            }
-          });
-        });
-      });
-    </script>
-    <script>
       function toggleIntro() {
         const section = document.getElementById("intro");
         section.classList.toggle("expanded");
