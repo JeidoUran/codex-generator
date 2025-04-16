@@ -1,0 +1,99 @@
+
+const fs = require("fs");
+const path = require("path");
+const cheerio = require("cheerio");
+
+const slugify = str => str.normalize("NFD")
+  .replace(/\p{Diacritic}/gu, "")
+  .toLowerCase()
+  .replace(/[^a-z0-9]+/g, "-")
+  .replace(/(^-|-$)/g, "");
+
+const racesDir = path.join(__dirname, "../output/races");
+const outputPath = path.join(racesDir, "index.html");
+
+const footerPath = path.join(__dirname, "footer.html");
+const footerHTML = fs.readFileSync(footerPath, "utf8");
+
+const raceFiles = fs.readdirSync(racesDir)
+  .filter(f => f.endsWith(".html") && f !== "index.html");
+
+const raceCards = [];
+
+for (const file of raceFiles) {
+  const filePath = path.join(racesDir, file);
+  const content = fs.readFileSync(filePath, "utf8");
+  const $ = cheerio.load(content);
+
+  const titre = $("title").text().trim() || file.replace(/\.html$/, "");
+  const slug = slugify(titre);
+  const desc = $('meta[name="description"]').attr("content") || "Cette race n'a pas encore de description.";
+  const imageName = file.replace(/\.html$/, ".png");
+  const imagePath = `../../assets/images/race-icons/${imageName}`;
+
+  raceCards.push({
+    slug,
+    html: `
+      <a href="${file}" class="carte-lien class-card" data-nom="${titre.toLowerCase()}" data-description="${desc.toLowerCase()}">
+        <img src="${imagePath}" alt="${titre}" class="image class-icon">
+        <h2>${titre}</h2>
+        <p>${desc}</p>
+      </a>`
+  });
+}
+
+raceCards.sort((a, b) => a.slug.localeCompare(b.slug));
+const cartesHtml = raceCards.map(c => c.html).join("\n");
+
+const finalHtml = `<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8">
+    <title>Index des Races</title>
+    <link rel="icon" href="../../favicon.png" type="image/png">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  </head>
+  <body>
+    <canvas id="particles"></canvas>
+    <header class="codex-header">
+      <div class="header-top">
+        <h1><img src="../../assets/images/green-book.png" class="image codex-image-header"> Index des Races</h1>
+      </div>
+      <p class="sous-titre">Consultez les différentes races jouables du JDR</p>
+      <div class="fixed-header-links">
+        <a href="/" class="carte-lien"><i class="fa-solid fa-arrow-left"></i> Retour au Codex</a>
+      </div>
+    </header>
+    <main class="accueil">
+      <div id="search-wrapper">
+        <input type="text" id="search-bar" placeholder="Rechercher une race...">
+      </div>
+      ${cartesHtml}
+    </main>
+    <button id="backToTop" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" aria-label="Retour en haut"><i class="fa-solid fa-arrow-up"></i> Retour en haut</button>
+    ${footerHTML}
+    <script src="../../particles.js"></script>
+    <script>
+      const searchInput = document.getElementById("search-bar");
+      const cards = document.querySelectorAll(".class-card");
+      searchInput.addEventListener("input", e => {
+        const val = e.target.value.toLowerCase();
+        cards.forEach(card => {
+          if (card.dataset.nom.includes(val) || card.dataset.description.includes(val)) {
+            card.style.removeProperty("display");
+          } else {
+            card.style.display = "none";
+          }
+        });
+      });
+
+      window.addEventListener('scroll', () => {
+        document.getElementById('backToTop').classList.toggle('show', window.scrollY > 300);
+      });
+    </script>
+  </body>
+</html>`;
+
+fs.writeFileSync(outputPath, finalHtml, "utf8");
+console.log("✅ Index des races généré avec succès dans:", outputPath);
