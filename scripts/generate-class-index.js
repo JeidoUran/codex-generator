@@ -35,18 +35,32 @@ for (const file of classFiles) {
   const titre = $("title").text().trim() || file.replace(/\.html$/, "");
   const slug = slugify(titre);
   const desc = $('meta[name="description"]').attr("content") || "Cette classe n'a pas encore de description.";
+  const isWip = /wip|work in progress|under construction/i.test(desc);
   const imageName = file.replace(/\.html$/, ".png");
   const imagePath = `../../assets/images/class-icons/${imageName}`;
 
-  classCards.push({
-    slug,
-    html: `
-      <a href="${file}" class="carte-lien class-card" data-nom="${titre.toLowerCase()}" data-description="${desc.toLowerCase()}">
-        <img src="${imagePath}" alt="${titre}" class="image class-icon">
-        <h2>${titre}</h2>
-        <p>${desc}</p>
-      </a>`
-  });
+  if (!isWip) {
+    classCards.push({
+      slug,
+      html: `
+        <a href="${file}" class="carte-lien class-card" data-nom="${titre.toLowerCase()}" data-description="${desc.toLowerCase()}">
+          <img src="${imagePath}" alt="${titre}" class="image class-icon">
+          <h2>${titre}</h2>
+          <p>${desc}</p>
+        </a>`
+    });
+  } else {
+    classCards.push({
+      slug,
+      html: `
+      <!-- Carte ${titre} masquée car marquée comme WIP -->
+      <!-- <a href="${file}" class="carte-lien class-card" data-nom="${titre.toLowerCase()}" data-description="${desc.toLowerCase()}">
+          <img src="${imagePath}" alt="${titre}" class="image class-icon">
+          <h2>${titre}</h2>
+          <p>${desc}</p>
+      </a> -->`
+    });
+  }
 }
 
 // Tri par ordre voulu
