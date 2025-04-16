@@ -267,11 +267,11 @@ const navLinks = [
     { href: `#${section.id}`, label: section.titre },
     ...section.sorts.map(sort => ({ href: `#${sort.id}`, label: sort.nom }))
   ]),
-  { href: "#progression-table", label: "Progression par niveau" }
+  { href: "#tab-general", label: "Progression par niveau" }
 ];
 
 const sectionsPrincipales = ["#details", "#aptitudes", "#specialisations", "#sorts-mineurs", "#sorts-de-premier-niveau", "#sorts-de-second-niveau", "#sorts-de-troisieme-niveau",
-"#progression-table", "#magierkaiser", "#arztkaiser", "#starkekaiser", "#devouement-au-controle", "#devouement-a-la-restreinte", "#devouement-a-la-vengeance", "#serment-de-destruction",
+"#tab-general", "#magierkaiser", "#arztkaiser", "#starkekaiser", "#devouement-au-controle", "#devouement-a-la-restreinte", "#devouement-a-la-vengeance", "#serment-de-destruction",
 "#serment-de-protection", "#maitre-des-epees", "#maitre-des-haches", "#maitre-des-boucliers", "#pacte-de-l-evoqueur", "#pacte-du-courtier", "#ecole-du-commandement", "#ecole-de-l-offense",
 "#ecole-du-seigneur-de-guerre", "#porteur-de-mort", "#garde-de-la-mort", "#voile-de-la-mort", "#porteur-de-canon", "#porteur-de-bouclier", "#faucon", "#loup", "#allegro", "#moderato",
 "#adagio"];
