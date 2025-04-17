@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build-patch": "node scripts/convertPatch.js",
-    "build-index": "node scripts/generate_patch_index.js",
-    "build-classes": "node scripts/generate-class-index.js",
+    "build-single-patch": "node scripts/generate-patch-page.js",
+    "build-index-patches": "node scripts/generate_patch_index.js",
+    "build-index-classes": "node scripts/generate-class-index.js",
     "build-single-class": "node scripts/generate-class-page.js",
     "build-batch-class": "node scripts/generate-class-page-batch.js",
-    "build-batch-patch": "node scripts/convertPatch-batch.js",
-    "build-races": "node scripts/generate-race-index.js",
+    "build-batch-patch": "node scripts/generate-patch-page-batch.js",
+    "build-index-races": "node scripts/generate-race-index.js",
     "build-single-race": "node scripts/generate-race-page.js",
     "build-batch-race": "node scripts/generate-race-page-batch.js"
   },
@@ -19,7 +19,6 @@
   "description": "",
   "dependencies": {
     "cheerio": "^1.0.0",
-    "markdown-it": "^14.1.0",
-    "showdown": "^2.1.0"
+    "markdown-it": "^14.1.0"
   }
 }

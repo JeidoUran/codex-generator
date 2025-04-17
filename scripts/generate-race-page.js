@@ -39,6 +39,8 @@ const formatCout = (val) => {
       return '<img src="../../assets/images/action-costs/passive-action.png" alt="Passive" class="image action-icon">Passif';
     case "spec":
       return '<img src="../../assets/images/action-costs/specialisation.png" alt="Specialisation" class="image action-icon">Spécialisation';
+    case "special":
+      return '<img src="../../assets/images/action-costs/special.png" alt="Special" class="image action-icon">Spécial';
     default:
       return val;
   }
@@ -46,7 +48,7 @@ const formatCout = (val) => {
 
 const raceIcons = {
   "Brouni": "brouni",
-  "Célestrien": "celestrian",
+  "Celestrien": "celestrian",
   "Earthlain": "earthlain",
   "Therian": "therian",
   "Sentinelle": "sentinel",
@@ -148,19 +150,6 @@ if (currentAptitude) aptitudes.push(currentAptitude);
 
 const nomRaceSansAccent = nomRace.normalize("NFD").replace(/\p{Diacritic}/gu, "");
 
-const navLinks = [
-  { href: "#traits", label: "Traits raciaux" },
-  { href: "#aptitudes", label: "Aptitudes raciales" },
-  ...aptitudes.map(a => ({ href: `#${a.id}`, label: a.nom }))
-];
-
-const sectionsPrincipales = ["#traits", "#aptitudes"];
-
-const navHTML = `\n<div class="class-nav">\n  ${navLinks.map(l => {
-  const cls = sectionsPrincipales.includes(l.href) ? 'section-link' : 'sub-link';
-  return `<a href="${l.href}" class="${cls}">${l.label}</a>`;
-}).join("\n  ")}\n</div>`;
-
 const traitsHTML = traits.map(item => `<li><div class="image-texte">${item}</div></li>`).join("\n");
 
 const aptitudesHTML = aptitudes.map(a => `
@@ -185,10 +174,11 @@ const finalHtml = `<!DOCTYPE html>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
   </head>
   <body>
-    <canvas id="particles"></canvas> ${navHTML} <header class="codex-header">
+    <canvas id="particles"></canvas>
+    <header class="codex-header">
       <div class="header-top">
         <h1>
-          <img src="../../assets/images/class-icons/${iconeRace}.png" class="image class-icon"> ${nomRace}
+          <img src="../../assets/images/race-icons/${iconeRace}.png" class="image class-icon"> ${nomRace}
         </h1>
         <div class="fixed-header-links">
           <a href="index.html" class="carte-lien" style="display: inline-block; max-width: 300px;"><i class="fa-solid fa-arrow-left"></i> Index des races</a>
@@ -196,9 +186,9 @@ const finalHtml = `<!DOCTYPE html>
         </div>
       </div>
       <div>
-      <div class="illustration-wrapper double">
+      <div class="illustration-wrapper single">
       ${images.slice(1).map(img => `
-          <img src="${img}" alt="Illustration ${nomRace}" class="illustration-classe">
+          <img src="${img}" alt="Illustration ${nomRace}" class="illustration-race">
         `).join("\n")} 
         </div>
         </div>
@@ -225,45 +215,8 @@ const finalHtml = `<!DOCTYPE html>
         </div>
       </section>
     </main>
-    <button id="backToTop" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" aria-label="Retour en haut"><i class="fa-solid fa-arrow-up"></i> Retour en haut</button> ${footerHTML} <script>
-      document.addEventListener("DOMContentLoaded", function() {
-            const navContainer = document.querySelector('.class-nav');
-            const navLinks = document.querySelectorAll('.class-nav a[href^="#"]');
-            const sections = [...document.querySelectorAll("h2.patch-titre, article")];
-            let lastActive = null;
-            const observer = new IntersectionObserver((entries) => {
-                  entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                          const id = entry.target.getAttribute("id");
-                          const activeLink = [...navLinks].find(link => link.getAttribute("href") === \`#$\{id}\`);
-         
-                 if (activeLink && activeLink !== lastActive) {
-                 navLinks.forEach(link => link.classList.remove("active"));
-                 activeLink.classList.add("active");
-         
-                 // Scroll l'élément actif dans le menu si partiellement masqué
-                 const linkTop = activeLink.getBoundingClientRect().top;
-                 const navTop = navContainer.getBoundingClientRect().top;
-                 const linkBottom = linkTop + activeLink.offsetHeight;
-                 const navBottom = navTop + navContainer.offsetHeight;
-         
-                 if (linkTop < navTop || linkBottom > navBottom) {
-                     activeLink.scrollIntoView({ behavior: "smooth", block: "center" });
-                 }
-         
-                 lastActive = activeLink;
-                 }
-             }
-             });
-         }, {
-             rootMargin: "-30% 0px -60% 0px",
-             threshold: 0.1
-         });
-         
-         sections.forEach(section => observer.observe(section));
-         });
-      
-    </script>
+    <button id="backToTop" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" aria-label="Retour en haut"><i class="fa-solid fa-arrow-up"></i> Retour en haut</button>
+    ${footerHTML}
     <script>
       function toggleIntro() {
         const section = document.getElementById("intro");
@@ -290,19 +243,6 @@ const finalHtml = `<!DOCTYPE html>
         document.getElementById('backToTop').classList.toggle('show', window.scrollY > 300);
       });
     </script>
-    <script>
-      function toggleMobileNav(btn) {
-        const overlay = document.getElementById("mobileNav");
-        overlay.classList.toggle("show");
-        btn.classList.toggle("open");
-        btn.textContent = overlay.classList.contains("show") ? "✕" : "☰";
-      }
-    </script>
-    <script src="../../particles.js"></script>
-    <button class="mobile-nav-toggle" onclick="toggleMobileNav(this)">☰</button>
-    <div class="mobile-nav-overlay" id="mobileNav">
-      <div class="mobile-nav-content"> ${navLinks.map(l => { const cls = sectionsPrincipales.includes(l.href) ? 'section-link' : 'sub-link'; return ` <a href="${l.href}" class="${cls}" onclick="toggleMobileNav()">${l.label}</a>`; }).join("\n")} </div>
-    </div>
   </body>
 </html>`;
 

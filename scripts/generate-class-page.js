@@ -39,6 +39,8 @@ const formatCout = (val) => {
       return '<img src="../../assets/images/action-costs/passive-action.png" alt="Passive" class="image action-icon">Passif';
     case "spec":
       return '<img src="../../assets/images/action-costs/specialisation.png" alt="Specialisation" class="image action-icon">Spécialisation';
+    case "special":
+      return '<img src="../../assets/images/action-costs/special.png" alt="Special" class="image action-icon">Spécial';
     default:
       return val;
   }

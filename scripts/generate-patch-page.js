@@ -32,6 +32,15 @@ const classIcons = {
   "Pistolero": "gunner"
 };
 
+const raceIcons = {
+  "Brouni": "brouni",
+  "Celestrien": "celestrian",
+  "Earthlain": "earthlain",
+  "Therian": "therian",
+  "Sentinelle": "sentinel",
+  "Vaisseau": "vessel"
+};
+
 if (!inputPath) {
   console.error("❌ Veuillez spécifier un fichier markdown à convertir.");
   process.exit(1);
@@ -73,25 +82,38 @@ for (let line of lines) {
       content: [],
     };
     currentClasse = null;
-  } else if (line.startsWith("### ")) {
-    if (!currentSection || currentSection.title !== "Classes") continue;
+} else if (line.startsWith("### ")) {
+  if (!currentSection) return;
+  const title = line.replace("### ", "").trim();
+
+  if (currentSection.title === "Classes") {
     currentClasse = {
       type: "classe",
-      title: line.replace("### ", ""),
+      title,
+      icon: classIcons[title] || null,
       items: [],
     };
     currentSection.content.push(currentClasse);
-  } else if (line.startsWith("- ")) {
-    const item = { text: line.replace("- ", "").trim(), notes: [] };
-    if (currentClasse) {
-      currentClasse.items.push(item);
-    } else if (currentSection) {
-      currentSection.content.push(item);
-    }
-    lastItem = item;
-  } else if (/^\s+- /.test(line) && lastItem) {
-    lastItem.notes.push(line.replace(/^\s+- /, "").trim());
+  } else if (currentSection.title === "Races") {
+    currentClasse = {
+      type: "race",
+      title,
+      icon: raceIcons[title] || null,
+      items: [],
+    };
+    currentSection.content.push(currentClasse);
   }
+} else if (line.startsWith("- ")) {
+  const item = { text: line.replace("- ", "").trim(), notes: [] };
+  if (currentClasse) {
+    currentClasse.items.push(item);
+  } else if (currentSection) {
+    currentSection.content.push(item);
+  }
+  lastItem = item;
+} else if (/^\s+- /.test(line) && lastItem) {
+  lastItem.notes.push(line.replace(/^\s+- /, "").trim());
+}
 }
 if (currentSection) htmlSections.push(currentSection);
 
@@ -122,12 +144,25 @@ function renderSection(section) {
       }
       html += `\n    </ul>\n  </div>`;
     }
+  } else if (section.title === "Races") {
+    for (let race of section.content) {
+      const raceNameNormalized = race.title.normalize("NFD").replace(/\p{Diacritic}/gu, "").trim();
+      const iconName = raceIcons[race.title] || raceIcons[raceNameNormalized] || "notes-medium"
+      html += `\n  <div class="classe-subsection">\n    <h3 class="classe-nom">\n      <img src="../assets/images/race-icons/${iconName}.png" class="image image-h3">\n      ${race.title}\n    </h3>\n    <ul class="image-list">`;
+      if (!iconName || iconName === "notes-medium") {
+        console.warn(`⚠️ Icône manquante pour la classe : "${race.title}"`);
+      }
+      for (let item of race.items) {
+        html += renderItem(item);
+      }
+      html += `\n    </ul>\n  </div>`;
+    }
   } else {
     html += `\n  <ul class="image-list">`;
     for (let item of section.content) {
       html += renderItem(item);
     }
-    html += `\n  </ul>`;
+    html += `\n  </ul></section>`;
   }
 
   return html;

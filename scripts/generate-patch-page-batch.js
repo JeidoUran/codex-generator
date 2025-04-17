@@ -3,7 +3,7 @@ const path = require("path");
 const { execSync } = require("child_process");
 
 const sourceRoot = "./markdown/notes"; // racine de tes fichiers markdown
-const converterScript = "./scripts/convertPatch.js"; // ou generate-class.js selon le cas
+const converterScript = "./scripts/generate-patch-page.js"; // ou generate-class.js selon le cas
 
 // Fonction récursive pour parcourir tous les .md dans les sous-dossiers
 function getAllMarkdownFiles(dirPath) {

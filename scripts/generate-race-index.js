@@ -66,15 +66,15 @@ const finalHtml = `<!DOCTYPE html>
       </div>
     </header>
     <main class="accueil">
-      <div id="search-wrapper">
+      <!--<div id="search-wrapper">
         <input type="text" id="search-bar" placeholder="Rechercher une race...">
-      </div>
+      </div>-->
       ${cartesHtml}
     </main>
     <button id="backToTop" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" aria-label="Retour en haut"><i class="fa-solid fa-arrow-up"></i> Retour en haut</button>
     ${footerHTML}
     <script src="../../particles.js"></script>
-    <script>
+    <!--<script>
       const searchInput = document.getElementById("search-bar");
       const cards = document.querySelectorAll(".class-card");
       searchInput.addEventListener("input", e => {
@@ -91,7 +91,7 @@ const finalHtml = `<!DOCTYPE html>
       window.addEventListener('scroll', () => {
         document.getElementById('backToTop').classList.toggle('show', window.scrollY > 300);
       });
-    </script>
+    </script>-->
   </body>
 </html>`;
 
