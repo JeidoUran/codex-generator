@@ -32,7 +32,8 @@ for (const file of classFiles) {
   const content = fs.readFileSync(filePath, "utf8");
   const $ = cheerio.load(content);
 
-  const titre = $("title").text().trim() || file.replace(/\.html$/, "");
+  const fullTitle = $('title').text().trim();
+  const titre = fullTitle.split('|')[0].trim();
   const slug = slugify(titre);
   const desc = $('meta[name="description"]').attr("content") || "Cette classe n'a pas encore de description.";
   const isWip = /wip|work in progress|under construction/i.test(desc);
