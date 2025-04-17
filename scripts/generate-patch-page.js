@@ -38,7 +38,8 @@ const raceIcons = {
   "Earthlain": "earthlain",
   "Therian": "therian",
   "Sentinelle": "sentinel",
-  "Vaisseau": "vessel"
+  "Vaisseau": "vessel",
+  "Général": "general"
 };
 
 if (!inputPath) {
