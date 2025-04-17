@@ -346,7 +346,7 @@ const finalHtml = `<!DOCTYPE html>
 <html lang="fr">
   <head>
     <meta charset="UTF-8">
-    <title>${nomClasse}</title>
+    <title>${nomClasse} | Codex - Etrian Odyssey TTRPG</title>
     <meta name="description" content="${shortDescription || description[0] || nomClasse}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="../../favicon.png" type="image/png">
