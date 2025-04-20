@@ -48,11 +48,11 @@ const formatCout = (val) => {
 
 const raceIcons = {
   "Brouni": "brouni",
-  "Celestrien": "celestrian",
+  "Celestrien": "celestrien",
   "Earthlain": "earthlain",
   "Therian": "therian",
-  "Sentinelle": "sentinel",
-  "Vaisseau": "vessel"
+  "Sentinelle": "sentinelle",
+  "Vaisseau": "vaisseau"
 };
 
 const normalizeLabel = str =>

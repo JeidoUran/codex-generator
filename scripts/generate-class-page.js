@@ -55,19 +55,19 @@ const spellSectionIcons = {
 
 
 const classIcons = {
-  "Souverain": "sovereign",
-  "Envouteur": "hexer",
+  "Souverain": "souverain",
+  "Envouteur": "envouteur",
   "Imperial": "imperial",
-  "Lansquenet": "landsknecht",
-  "Mage guerrier": "war-magus",
-  "Moine": "monk",
-  "Necromancien": "necromancer",
+  "Lansquenet": "lansquenet",
+  "Mage guerrier": "mage-guerrier",
+  "Moine": "moine",
+  "Necromancien": "necromancien",
   "Shogun": "shogun",
-  "Heraut": "harbinger",
+  "Heraut": "heraut",
   "Dragoon": "dragoon",
-  "Vagabond": "rover",
+  "Vagabond": "vagabond",
   "Troubadour": "troubadour",
-  "Pistolero": "gunner"
+  "Pistolero": "pistolero"
 };
 
 const normalizeLabel = str =>
