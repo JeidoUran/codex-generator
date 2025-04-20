@@ -243,6 +243,7 @@ const finalHtml = `<!DOCTYPE html>
         document.getElementById('backToTop').classList.toggle('show', window.scrollY > 300);
       });
     </script>
+    <script src="../../particles.js"></script>
   </body>
 </html>`;
 
