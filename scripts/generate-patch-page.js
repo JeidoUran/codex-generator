@@ -17,28 +17,28 @@ const footerPath = path.resolve(__dirname, "footer.html");
 const footerHTML = fs.readFileSync(footerPath, "utf8");
 
 const classIcons = {
-  "Souverain": "sovereign",
-  "Envouteur": "hexer",
+  "Souverain": "souverain",
+  "Envouteur": "envouteur",
   "Imperial": "imperial",
-  "Lansquenet": "landsknecht",
-  "Mage guerrier": "war-magus",
-  "Moine": "monk",
-  "Necromancien": "necromancer",
+  "Lansquenet": "lansquenet",
+  "Mage guerrier": "mage-guerrier",
+  "Moine": "moine",
+  "Necromancien": "necromancien",
   "Shogun": "shogun",
-  "Heraut": "harbinger",
+  "Heraut": "heraut",
   "Dragoon": "dragoon",
-  "Vagabond": "rover",
+  "Vagabond": "vagabond",
   "Troubadour": "troubadour",
-  "Pistolero": "gunner"
+  "Pistolero": "pistolero"
 };
 
 const raceIcons = {
   "Brouni": "brouni",
-  "Celestrien": "celestrian",
+  "Celestrien": "celestrien",
   "Earthlain": "earthlain",
   "Therian": "therian",
-  "Sentinelle": "sentinel",
-  "Vaisseau": "vessel",
+  "Sentinelle": "sentinelle",
+  "Vaisseau": "vaisseau",
   "Général": "general"
 };
 
