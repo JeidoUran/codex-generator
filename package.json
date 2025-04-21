@@ -11,7 +11,8 @@
     "build-batch-patch": "node scripts/generate-patch-page-batch.js",
     "build-index-races": "node scripts/generate-race-index.js",
     "build-single-race": "node scripts/generate-race-page.js",
-    "build-batch-race": "node scripts/generate-race-page-batch.js"
+    "build-batch-race": "node scripts/generate-race-page-batch.js",
+    "build-codex": "npm run build-batch-race && npm run build-batch-class && npm run build-batch-patch && npm run build-index-races && npm run build-index-patches && npm run build-index-classes"
   },
   "keywords": [],
   "author": "",
