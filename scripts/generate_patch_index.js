@@ -66,7 +66,10 @@ const finalHtml = `<!DOCTYPE html>
       </button>
     </div> ` + cartesHtml + ` <div style="text-align: center; margin-top: 3rem;"></div>
     </main>
-    <button id="backToTop" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" aria-label="Retour en haut"><i class="fa-solid fa-arrow-up"></i> Retour en haut</button> ${footerHTML} <script src="../particles.js"></script>
+    <button id="backToTop" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" aria-label="Retour en haut"><i class="fa-solid fa-arrow-up"></i> Retour en haut</button>
+    
+    ${footerHTML}
+
     <script>
       const vues = JSON.parse(localStorage.getItem("patchesVus") || "[]");
       const patches = Array.from(document.querySelectorAll(".carte-lien[data-patch]"));
@@ -97,11 +100,8 @@ const finalHtml = `<!DOCTYPE html>
         boutonLu.style.display = "none";
       });
     </script>
-    <script>
-      window.addEventListener('scroll', () => {
-        document.getElementById('backToTop').classList.toggle('show', window.scrollY > 300);
-      });
-    </script>
+    <script src="../scripts/particles.js"></script>
+    <script src="../scripts/backToTop.js"></script>
   </body>
 </html>`;
 

@@ -215,11 +215,6 @@ const finalHtml = `<!DOCTYPE html>
   ${footerHTML}
 
   <script>
-    window.addEventListener('scroll', () => {
-        document.getElementById('backToTop').classList.toggle('show', window.scrollY > 300);
-    });
-  </script>
-  <script>
   document.addEventListener("DOMContentLoaded", function() {
         const navContainer = document.querySelector('.patch-nav');
         const navLinks = document.querySelectorAll('.patch-nav a[href^="#"]');
@@ -257,9 +252,9 @@ const finalHtml = `<!DOCTYPE html>
      
      sections.forEach(section => observer.observe(section));
      });
-  
 </script>
-  <script src="../particles.js"></script>
+  <script src="../scripts/backToTop.js"></script>
+  <script src="../scripts/particles.js"></script>
 </body>
 </html>`;
 

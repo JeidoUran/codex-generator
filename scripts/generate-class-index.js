@@ -104,13 +104,13 @@ const finalHtml = `<!DOCTYPE html>
 
     <main class="accueil">
     <div id="search-wrapper">
-      <input type="text" id="search-bar" placeholder="Rechercher une classe...">
+      <input type="text" id="search-bar" placeholder="Rechercher une classe..." style="max-width: 400px;">
     </div>
       ${cartesHtml}
     </main>
     <button id="backToTop" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" aria-label="Retour en haut"><i class="fa-solid fa-arrow-up"></i> Retour en haut</button>
     ${footerHTML}
-    <script src="../../particles.js"></script>
+    <script src="../../scripts/particles.js"></script>
     <script>
       const searchInput = document.getElementById("search-bar");
       const cards = document.querySelectorAll(".class-card");
@@ -124,11 +124,8 @@ const finalHtml = `<!DOCTYPE html>
           }
         });
       });
-
-      window.addEventListener('scroll', () => {
-        document.getElementById('backToTop').classList.toggle('show', window.scrollY > 300);
-      });
     </script>
+    <script src="../../scripts/backToTop.js"></script>
   </body>
 </html>`;
 

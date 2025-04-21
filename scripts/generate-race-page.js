@@ -178,7 +178,7 @@ const finalHtml = `<!DOCTYPE html>
     <header class="codex-header">
         <div class="illustration-wrapper">
           ${images.slice(1).map(img => `
-        <img src="${img}" alt="Illustration ${nomRace}" class="illustration-race">
+        <img src="${img}" alt="Illustration ${nomRace}" class="illustration-race" onclick="openLightbox(this.src)">
         `).join("\n")} 
         </div>
         <h1>
@@ -223,38 +223,18 @@ const finalHtml = `<!DOCTYPE html>
       </section>
     </main>
     <button id="backToTop" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" aria-label="Retour en haut"><i class="fa-solid fa-arrow-up"></i> Retour en haut</button>
+    
     ${footerHTML}
-    <script>
-      function toggleIntro() {
-        const section = document.getElementById("intro");
-        section.classList.toggle("expanded");
-        const btn = section.querySelector("button");
-        btn.textContent = section.classList.contains("expanded") ? "Réduire" : "Afficher la suite";
-      }
-    </script>
-    <script>
-      function toggleSection(button) {
-        const content = button.closest("section").querySelector(".collapsible-content");
-        const isOpen = content.classList.contains("expanded");
-        if (isOpen) {
-          content.classList.remove("expanded");
-          button.textContent = "▼";
-        } else {
-          content.classList.add("expanded");
-          button.textContent = "▲";
-        }
-      }
-    </script>
-    <script>
-      window.addEventListener('scroll', () => {
-        document.getElementById('backToTop').classList.toggle('show', window.scrollY > 300);
-      });
-    </script>
-    <script src="../../particles.js"></script>
+
+    <script src=""../../scripts/backToTop.js"></script>
+    <script src="../../scripts/toggleable-intro.js></script>
+    <script src="../../scripts/toggleable-section.js></script>
+    <script src="../../scripts/lightbox.js"></script>
+    <script src="../../scripts/particles.js"></script>
   </body>
 </html>`;
 
-const relativePath = path.relative("markdown", inputPath); // Ex: "classes/sovereign.md"
+const relativePath = path.relative("markdown", inputPath);
 const outputBaseName = relativePath.replace(/\.md$/, ".html");
 const outputPath = path.join("output", outputBaseName);
 
