@@ -93,6 +93,7 @@ const finalHtml = `<!DOCTYPE html>
       <p class="sous-titre">Archives et mises à jour du monde d’Etrian Odyssey</p>
       <div class="fixed-header-links">
       <a href="/" class="carte-lien" style="display: inline-block; max-width: 300px;"><i class="fa-solid fa-arrow-left"></i> Retour au Codex</a>
+      </div>
     </header>
 
     <nav class="nav-magique">
