@@ -355,23 +355,31 @@ const finalHtml = `<!DOCTYPE html>
   </head>
   <body>
     <canvas id="particles"></canvas> ${navHTML} <header class="codex-header">
-      <div class="header-top">
+      <div class="illustration-wrapper double">
+      ${images.slice(1).map(img => `
+          <img src="${img}" alt="Illustration ${nomClasse}" class="illustration-classe" onclick="openLightbox(this.src)">
+        `).join("\n")} 
+        </div>
         <h1>
           <img src="../../assets/images/class-icons/${iconeClasse}.png" class="image class-icon"> ${nomClasse}
         </h1>
+        <p class="sous-titre">Archives et mises à jour du monde d’Etrian Odyssey</p>
         <div class="fixed-header-links">
           <a href="index.html" class="carte-lien" style="display: inline-block; max-width: 300px;"><i class="fa-solid fa-arrow-left"></i> Index des classes</a>
           <a href="/" class="carte-lien" style="display: inline-block; max-width: 300px;"><i class="fa-solid fa-arrow-left"></i> Retour au Codex</a>
         </div>
-      </div>
-      <div>
-      <div class="illustration-wrapper double">
-      ${images.slice(1).map(img => `
-          <img src="${img}" alt="Illustration ${nomClasse}" class="illustration-classe">
-        `).join("\n")} 
-        </div>
-        </div>
     </header>
+
+    <nav class="nav-magique">
+      <a href="/">Accueil</a>
+      <a href="../../notes/">Patch Notes</a>
+      <a href="../../regles/">Règles</a>
+      <a href="../../univers/">Univers</a>
+      <a href="../../musique">Musiques</a>
+      <a href="../../ressources/">Ressources</a>
+      <a href="../../credits">Crédits</a>
+    </nav>
+
     <main class="accueil">
       <section class="intro-collapsible click" id="intro">
         <p>${description.join(" ")} </p>
@@ -403,6 +411,9 @@ const finalHtml = `<!DOCTYPE html>
     ${sortsHTML}
     ${tableHTML}
     </main>
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+      <img id="lightbox-img" src="" alt="Portrait" />
+    </div>
     <button id="backToTop" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" aria-label="Retour en haut"><i class="fa-solid fa-arrow-up"></i> Retour en haut</button> ${footerHTML} <script>
       document.addEventListener("DOMContentLoaded", function() {
             const navContainer = document.querySelector('.class-nav');
@@ -492,6 +503,18 @@ const finalHtml = `<!DOCTYPE html>
         overlay.classList.toggle("show");
         btn.classList.toggle("open");
         btn.textContent = overlay.classList.contains("show") ? "✕" : "☰";
+      }
+    </script>
+        <script>
+      function openLightbox(src) {
+        const lightbox = document.getElementById("lightbox");
+        const img = document.getElementById("lightbox-img");
+        img.src = src;
+        lightbox.style.display = "flex";
+      }
+    
+      function closeLightbox() {
+        document.getElementById("lightbox").style.display = "none";
       }
     </script>
     <script src="../../particles.js"></script>
