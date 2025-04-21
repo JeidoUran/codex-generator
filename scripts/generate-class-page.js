@@ -446,7 +446,7 @@ const finalHtml = `<!DOCTYPE html>
     <script src="../../scripts/toggleable-section.js"></script>
     <script src="../../scripts/lightbox.js"></script>
     <script src="../../scripts/particles.js"></script>
-    <script src=""../../scripts/backToTop.js"></script>
+    <script src="../../scripts/backToTop.js"></script>
     <button class="mobile-nav-toggle" onclick="toggleMobileNav(this)">☰</button>
     <div class="mobile-nav-overlay" id="mobileNav">
       <div class="mobile-nav-content"> ${navLinks.map(l => { const cls = sectionsPrincipales.includes(l.href) ? 'section-link' : 'sub-link'; return ` <a href="${l.href}" class="${cls}" onclick="toggleMobileNav()">${l.label}</a>`; }).join("\n")} </div>
