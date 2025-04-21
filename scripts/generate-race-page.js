@@ -176,23 +176,30 @@ const finalHtml = `<!DOCTYPE html>
   <body>
     <canvas id="particles"></canvas>
     <header class="codex-header">
-      <div class="header-top">
+        <div class="illustration-wrapper">
+          ${images.slice(1).map(img => `
+        <img src="${img}" alt="Illustration ${nomRace}" class="illustration-race">
+        `).join("\n")} 
+        </div>
         <h1>
           <img src="../../assets/images/race-icons/${iconeRace}.png" class="image class-icon"> ${nomRace}
         </h1>
+          <p class="sous-titre">Archives et mises à jour du monde d’Etrian Odyssey</p>
         <div class="fixed-header-links">
           <a href="index.html" class="carte-lien" style="display: inline-block; max-width: 300px;"><i class="fa-solid fa-arrow-left"></i> Index des races</a>
-          <a href="/" class="carte-lien" style="display: inline-block; max-width: 300px;"><i class="fa-solid fa-arrow-left"></i> Retour au Codex</a>
-        </div>
-      </div>
-      <div>
-      <div class="illustration-wrapper single">
-      ${images.slice(1).map(img => `
-          <img src="${img}" alt="Illustration ${nomRace}" class="illustration-race">
-        `).join("\n")} 
-        </div>
         </div>
     </header>
+
+    <nav class="nav-magique">
+      <a href="/">Accueil</a>
+      <a href="../../notes/">Patch Notes</a>
+      <a href="../../regles/">Règles</a>
+      <a href="../../univers/">Univers</a>
+      <a href="../../musique">Musiques</a>
+      <a href="../../ressources/">Ressources</a>
+      <a href="../../credits">Crédits</a>
+    </nav>
+
     <main class="accueil">
       <section class="intro-collapsible click" id="intro">
         <p>${description.join(" ")} </p>

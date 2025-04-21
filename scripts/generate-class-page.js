@@ -355,7 +355,7 @@ const finalHtml = `<!DOCTYPE html>
   </head>
   <body>
     <canvas id="particles"></canvas> ${navHTML} <header class="codex-header">
-      <div class="illustration-wrapper double">
+      <div class="illustration-wrapper">
       ${images.slice(1).map(img => `
           <img src="${img}" alt="Illustration ${nomClasse}" class="illustration-classe" onclick="openLightbox(this.src)">
         `).join("\n")} 
@@ -366,7 +366,6 @@ const finalHtml = `<!DOCTYPE html>
         <p class="sous-titre">Archives et mises à jour du monde d’Etrian Odyssey</p>
         <div class="fixed-header-links">
           <a href="index.html" class="carte-lien" style="display: inline-block; max-width: 300px;"><i class="fa-solid fa-arrow-left"></i> Index des classes</a>
-          <a href="/" class="carte-lien" style="display: inline-block; max-width: 300px;"><i class="fa-solid fa-arrow-left"></i> Retour au Codex</a>
         </div>
     </header>
 
