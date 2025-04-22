@@ -219,7 +219,7 @@ const finalHtml = `<!DOCTYPE html>
         const navContainer = document.querySelector('.patch-nav');
         const navLinks = document.querySelectorAll('.patch-nav a[href^="#"]');
         const sections = [...document.querySelectorAll(".patch-section")];
-        console.log(sections);
+
         let lastActive = null;
         const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {

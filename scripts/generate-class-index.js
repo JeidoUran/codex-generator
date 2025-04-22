@@ -89,7 +89,7 @@ const finalHtml = `<!DOCTYPE html>
     <header class="codex-header">
       <img src="../../assets/images/banniere.png" alt="Bannière" class="banniere">
         <h1>Index des Classes</h1>
-      <p class="sous-titre">Archives et mises à jour du monde d’Etrian Odyssey</p>
+      <p class="sous-titre">L’archive vivante des Égarés</p>
     </header>
 
     <nav class="nav-magique">
