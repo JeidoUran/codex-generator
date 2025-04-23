@@ -169,7 +169,7 @@ function renderSection(section) {
   return html;
 }
 
-const navigationHTML = `\n<nav class="patch-nav">\n ${navLinks.map(link => `<a href="#${link.id}">${link.title}</a>`).join("\n    ")}\n  </nav>`;
+const navigationHTML = `\n<nav class="patch-nav">\n ${navLinks.map(link => `<a href="#${link.id}" class="section-link">${link.title}</a>`).join("\n    ")}\n  </nav>`;
 
 const body = htmlSections.map(renderSection).join("\n");
 
