@@ -211,6 +211,9 @@ const finalHtml = `<!DOCTYPE html>
   </main>
 
   <button id="backToTop" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" aria-label="Retour en haut"><i class="fa-solid fa-arrow-up"></i> Retour en haut</button>
+  <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <img id="lightbox-img" src="" alt="Portrait" />
+  </div>
 
   ${footerHTML}
 
@@ -255,6 +258,7 @@ const finalHtml = `<!DOCTYPE html>
 </script>
   <script src="../scripts/backToTop.js"></script>
   <script src="../scripts/particles.js"></script>
+  <script src="../scripts/lightbox.js"></script>
 </body>
 </html>`;
 
