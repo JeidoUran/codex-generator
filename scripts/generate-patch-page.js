@@ -188,7 +188,7 @@ const finalHtml = `<!DOCTYPE html>
   ${navigationHTML}
 
   <header class="codex-header" id="top">
-    <img src="../assets/images/banniere.png" alt="Bannière" class="banniere">
+    <a href="" class="banniere-link"><img src="assets/images/banniere.png" alt="Bannière" class="banniere"></a>
     <h1><img src="../assets/images/silver-scroll.png" class="image codex-image-header"> ${titrePatch}</h1>
     <p class="sous-titre">Publié le ${datePatch}</p>
     <div class="fixed-header-links">
