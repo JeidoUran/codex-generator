@@ -44,8 +44,8 @@ const finalHtml = `<!DOCTYPE html>
   <body>
     <canvas id="particles"></canvas>
     <header class="codex-header">
-      <img src="../assets/images/banniere.png" alt="Bannière" class="banniere">
-        <h1>Historique des Patch Notes</h1>
+      <a href="/" class="banniere-link"><img src="../assets/images/banniere.png" alt="Bannière" class="banniere"></a>
+      <h1>Historique des Patch Notes</h1>
       <p class="sous-titre">L’archive vivante des Égarés</p>
     </header>
 
