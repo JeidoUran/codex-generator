@@ -8,7 +8,7 @@ const converterScript = "./scripts/generate-class-page.js"; // ton script actuel
 // Fonction récursive pour parcourir tous les .md dans les sous-dossiers
 function getAllMarkdownFiles(dirPath) {
   let results = [];
-  fs.readdirSync(dirPath).forEach(file => {
+  fs.readdirSync(dirPath).forEach((file) => {
     const filePath = path.join(dirPath, file);
     const stat = fs.statSync(filePath);
     if (stat.isDirectory()) {
@@ -22,7 +22,7 @@ function getAllMarkdownFiles(dirPath) {
 
 const mdFiles = getAllMarkdownFiles(sourceRoot);
 
-mdFiles.forEach(file => {
+mdFiles.forEach((file) => {
   console.log(`🔄 Conversion de ${file}...`);
   execSync(`node ${converterScript} "${file}"`, { stdio: "inherit" });
 });

@@ -4,11 +4,13 @@ const path = require("path");
 const MarkdownIt = require("markdown-it");
 const md = new MarkdownIt({ html: true });
 
-const slugify = str => str.normalize("NFD")
-  .replace(/\p{Diacritic}/gu, "") // enlève les accents
-  .toLowerCase()
-  .replace(/[^a-z0-9]+/g, "-")    // remplace les caractères non alphanumériques par des tirets
-  .replace(/(^-|-$)/g, "");       // enlève les tirets en début/fin
+const slugify = (str) =>
+  str
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "") // enlève les accents
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-") // remplace les caractères non alphanumériques par des tirets
+    .replace(/(^-|-$)/g, ""); // enlève les tirets en début/fin
 
 const args = process.argv.slice(2);
 const inputPath = args[0];
@@ -17,29 +19,29 @@ const footerPath = path.resolve(__dirname, "footer.html");
 const footerHTML = fs.readFileSync(footerPath, "utf8");
 
 const classIcons = {
-  "Souverain": "souverain",
-  "Envouteur": "envouteur",
-  "Imperial": "imperial",
-  "Lansquenet": "lansquenet",
+  Souverain: "souverain",
+  Envouteur: "envouteur",
+  Imperial: "imperial",
+  Lansquenet: "lansquenet",
   "Mage guerrier": "mage-guerrier",
-  "Moine": "moine",
-  "Necromancien": "necromancien",
-  "Shogun": "shogun",
-  "Heraut": "heraut",
-  "Dragoon": "dragoon",
-  "Vagabond": "vagabond",
-  "Troubadour": "troubadour",
-  "Pistolero": "pistolero"
+  Moine: "moine",
+  Necromancien: "necromancien",
+  Shogun: "shogun",
+  Heraut: "heraut",
+  Dragoon: "dragoon",
+  Vagabond: "vagabond",
+  Troubadour: "troubadour",
+  Pistolero: "pistolero",
 };
 
 const raceIcons = {
-  "Brouni": "brouni",
-  "Celestrien": "celestrien",
-  "Earthlain": "earthlain",
-  "Therian": "therian",
-  "Sentinelle": "sentinelle",
-  "Vaisseau": "vaisseau",
-  "Général": "general"
+  Brouni: "brouni",
+  Celestrien: "celestrien",
+  Earthlain: "earthlain",
+  Therian: "therian",
+  Sentinelle: "sentinelle",
+  Vaisseau: "vaisseau",
+  Général: "general",
 };
 
 if (!inputPath) {
@@ -53,7 +55,6 @@ const outputPath = path.join("output", outputBaseName);
 
 // Assure-toi que le dossier de destination existe :
 fs.mkdirSync(path.dirname(outputPath), { recursive: true });
-
 
 const raw = fs.readFileSync(inputPath, "utf8");
 const lines = raw.split(/\r?\n/);
@@ -70,7 +71,10 @@ for (let line of lines) {
   if (line.startsWith("# ")) {
     titrePatch = line.replace("# ", "").trim();
   } else if (line.toLowerCase().startsWith("_date:")) {
-    datePatch = line.replace(/_date:/i, "").replace(/_/g, "").trim();
+    datePatch = line
+      .replace(/_date:/i, "")
+      .replace(/_/g, "")
+      .trim();
   } else if (line.startsWith("## ")) {
     if (currentSection) htmlSections.push(currentSection);
     const title = line.replace("## ", "");
@@ -83,38 +87,38 @@ for (let line of lines) {
       content: [],
     };
     currentClasse = null;
-} else if (line.startsWith("### ")) {
-  if (!currentSection) return;
-  const title = line.replace("### ", "").trim();
+  } else if (line.startsWith("### ")) {
+    if (!currentSection) return;
+    const title = line.replace("### ", "").trim();
 
-  if (currentSection.title === "Classes") {
-    currentClasse = {
-      type: "classe",
-      title,
-      icon: classIcons[title] || null,
-      items: [],
-    };
-    currentSection.content.push(currentClasse);
-  } else if (currentSection.title === "Races") {
-    currentClasse = {
-      type: "race",
-      title,
-      icon: raceIcons[title] || null,
-      items: [],
-    };
-    currentSection.content.push(currentClasse);
+    if (currentSection.title === "Classes") {
+      currentClasse = {
+        type: "classe",
+        title,
+        icon: classIcons[title] || null,
+        items: [],
+      };
+      currentSection.content.push(currentClasse);
+    } else if (currentSection.title === "Races") {
+      currentClasse = {
+        type: "race",
+        title,
+        icon: raceIcons[title] || null,
+        items: [],
+      };
+      currentSection.content.push(currentClasse);
+    }
+  } else if (line.startsWith("- ")) {
+    const item = { text: line.replace("- ", "").trim(), notes: [] };
+    if (currentClasse) {
+      currentClasse.items.push(item);
+    } else if (currentSection) {
+      currentSection.content.push(item);
+    }
+    lastItem = item;
+  } else if (/^\s+- /.test(line) && lastItem) {
+    lastItem.notes.push(line.replace(/^\s+- /, "").trim());
   }
-} else if (line.startsWith("- ")) {
-  const item = { text: line.replace("- ", "").trim(), notes: [] };
-  if (currentClasse) {
-    currentClasse.items.push(item);
-  } else if (currentSection) {
-    currentSection.content.push(item);
-  }
-  lastItem = item;
-} else if (/^\s+- /.test(line) && lastItem) {
-  lastItem.notes.push(line.replace(/^\s+- /, "").trim());
-}
 }
 if (currentSection) htmlSections.push(currentSection);
 
@@ -134,8 +138,14 @@ function renderSection(section) {
 
   if (section.title === "Classes") {
     for (let classe of section.content) {
-      const classNameNormalized = classe.title.normalize("NFD").replace(/\p{Diacritic}/gu, "").trim();
-      const iconName = classIcons[classe.title] || classIcons[classNameNormalized] || "notes-medium"
+      const classNameNormalized = classe.title
+        .normalize("NFD")
+        .replace(/\p{Diacritic}/gu, "")
+        .trim();
+      const iconName =
+        classIcons[classe.title] ||
+        classIcons[classNameNormalized] ||
+        "notes-medium";
       html += `\n  <div class="classe-subsection">\n    <h3 class="classe-nom">\n      <img src="../assets/images/class-icons/${iconName}.png" class="image image-h3">\n      ${classe.title}\n    </h3>\n    <ul class="image-list">`;
       if (!iconName || iconName === "notes-medium") {
         console.warn(`⚠️ Icône manquante pour la classe : "${classe.title}"`);
@@ -147,8 +157,14 @@ function renderSection(section) {
     }
   } else if (section.title === "Races") {
     for (let race of section.content) {
-      const raceNameNormalized = race.title.normalize("NFD").replace(/\p{Diacritic}/gu, "").trim();
-      const iconName = raceIcons[race.title] || raceIcons[raceNameNormalized] || "notes-medium"
+      const raceNameNormalized = race.title
+        .normalize("NFD")
+        .replace(/\p{Diacritic}/gu, "")
+        .trim();
+      const iconName =
+        raceIcons[race.title] ||
+        raceIcons[raceNameNormalized] ||
+        "notes-medium";
       html += `\n  <div class="classe-subsection">\n    <h3 class="classe-nom">\n      <img src="../assets/images/race-icons/${iconName}.png" class="image image-h3">\n      ${race.title}\n    </h3>\n    <ul class="image-list">`;
       if (!iconName || iconName === "notes-medium") {
         console.warn(`⚠️ Icône manquante pour la classe : "${race.title}"`);
@@ -169,7 +185,9 @@ function renderSection(section) {
   return html;
 }
 
-const navigationHTML = `\n<nav class="patch-nav">\n ${navLinks.map(link => `<a href="#${link.id}" class="section-link">${link.title}</a>`).join("\n    ")}\n  </nav>`;
+const navigationHTML = `\n<nav class="patch-nav">\n ${navLinks
+  .map((link) => `<a href="#${link.id}" class="section-link">${link.title}</a>`)
+  .join("\n    ")}\n  </nav>`;
 
 const body = htmlSections.map(renderSection).join("\n");
 

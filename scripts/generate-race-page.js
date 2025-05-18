@@ -17,11 +17,13 @@ if (!inputPath) {
 
 const raw = fs.readFileSync(inputPath, "utf8");
 const lines = raw.split(/\r?\n/);
-const slugify = str => str.normalize("NFD")
-  .replace(/\p{Diacritic}/gu, "")
-  .toLowerCase()
-  .replace(/[^a-z0-9]+/g, "-")
-  .replace(/(^-|-$)/g, "");
+const slugify = (str) =>
+  str
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
 
 const formatCout = (val) => {
   switch (val.toLowerCase()) {
@@ -47,16 +49,17 @@ const formatCout = (val) => {
 };
 
 const raceIcons = {
-  "Brouni": "brouni",
-  "Celestrien": "celestrien",
-  "Earthlain": "earthlain",
-  "Therian": "therian",
-  "Sentinelle": "sentinelle",
-  "Vaisseau": "vaisseau"
+  Brouni: "brouni",
+  Celestrien: "celestrien",
+  Earthlain: "earthlain",
+  Therian: "therian",
+  Sentinelle: "sentinelle",
+  Vaisseau: "vaisseau",
 };
 
-const normalizeLabel = str =>
-  str.normalize("NFD")
+const normalizeLabel = (str) =>
+  str
+    .normalize("NFD")
     .replace(/\p{Diacritic}/gu, "")
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
@@ -64,11 +67,11 @@ const normalizeLabel = str =>
 
 const rawTraitIcons = {
   "Augmentation de caractéristique": "ability-score-increase",
-  "Alignement": "alignment",
-  "Langues": "languages",
+  Alignement: "alignment",
+  Langues: "languages",
   "Vitesse de déplacement": "speed",
   "Compétences supplémentaires": "bonus-skills",
-  "Compétences d'Union": "union-skills"
+  "Compétences d'Union": "union-skills",
 };
 
 const traitIcons = {};
@@ -91,7 +94,10 @@ for (let i = 0; i < lines.length; i++) {
 
   if (line.startsWith("# ")) {
     nomRace = line.replace("# ", "").trim();
-    const nomRaceSansAccent = nomRace.normalize("NFD").replace(/\p{Diacritic}/gu, "").trim();
+    const nomRaceSansAccent = nomRace
+      .normalize("NFD")
+      .replace(/\p{Diacritic}/gu, "")
+      .trim();
     iconeRace = raceIcons[nomRaceSansAccent] || "default";
   } else if (line.startsWith("![")) {
     const match = line.match(/\((.*?)\)/);
@@ -104,24 +110,28 @@ for (let i = 0; i < lines.length; i++) {
     const titre = line.replace(/^##\s+/, "").trim();
     const id = slugify(titre);
     const lower = titre.toLowerCase();
-    
   } else if (line.startsWith("### ")) {
     const nom = line.replace("### ", "").trim();
-  if (section === "aptitudes") {  
+    if (section === "aptitudes") {
       if (currentAptitude) aptitudes.push(currentAptitude);
       currentAptitude = {
         id: slugify(line.replace("### ", "")),
         nom: line.replace("### ", "").trim(),
         icone: "",
         cout: "",
-        description: []
+        description: [],
       };
     }
   } else if (line.toLowerCase().startsWith("icone:")) {
-    if (section === "aptitudes" && currentAptitude) currentAptitude.icone = line.split(":")[1].trim();    
-  } else if (line.toLowerCase().startsWith("coût:") || line.toLowerCase().startsWith("cout:")) {
+    if (section === "aptitudes" && currentAptitude)
+      currentAptitude.icone = line.split(":")[1].trim();
+  } else if (
+    line.toLowerCase().startsWith("coût:") ||
+    line.toLowerCase().startsWith("cout:")
+  ) {
     const rawCout = line.split(":")[1].trim();
-    if (section === "aptitudes" && currentAptitude) currentAptitude.cout = formatCout(rawCout);
+    if (section === "aptitudes" && currentAptitude)
+      currentAptitude.cout = formatCout(rawCout);
   } else if (section === "details" && line.startsWith("- ")) {
     const detailMatch = line.match(/- \*\*(.+?)\*\*:? ?(.*)/);
     if (detailMatch) {
@@ -130,7 +140,9 @@ for (let i = 0; i < lines.length; i++) {
 
       const iconName = traitIcons[normalizeLabel(label)] || null;
 
-      const iconHTML = iconName ? `<img src="../../assets/images/race-traits/${iconName}.png" class="image details-icon"> ` : "";
+      const iconHTML = iconName
+        ? `<img src="../../assets/images/race-traits/${iconName}.png" class="image details-icon"> `
+        : "";
 
       traits.push(`<strong>${iconHTML}${label} :</strong> ${value}`);
     } else {
@@ -144,15 +156,21 @@ for (let i = 0; i < lines.length; i++) {
     }
   } else if (section === "aptitudes" && currentAptitude && line) {
     currentAptitude.description.push(line);
-  }  
+  }
 }
 if (currentAptitude) aptitudes.push(currentAptitude);
 
-const nomRaceSansAccent = nomRace.normalize("NFD").replace(/\p{Diacritic}/gu, "");
+const nomRaceSansAccent = nomRace
+  .normalize("NFD")
+  .replace(/\p{Diacritic}/gu, "");
 
-const traitsHTML = traits.map(item => `<li><div class="image-texte">${item}</div></li>`).join("\n");
+const traitsHTML = traits
+  .map((item) => `<li><div class="image-texte">${item}</div></li>`)
+  .join("\n");
 
-const aptitudesHTML = aptitudes.map(a => `
+const aptitudesHTML = aptitudes
+  .map(
+    (a) => `
   <article id="${a.id}">
   <h3>
     <img src="${a.icone}" class="image skill-icon">
@@ -160,14 +178,18 @@ const aptitudesHTML = aptitudes.map(a => `
     <span>${a.cout}</span>
   </h3>
     <p>${a.description.join(" ")}</p>
-  </article>`).join("\n"); 
+  </article>`
+  )
+  .join("\n");
 
 const finalHtml = `<!DOCTYPE html>
 <html lang="fr">
   <head>
     <meta charset="UTF-8">
     <title>${nomRace} | Codex - Etrian Odyssey TTRPG</title>
-    <meta name="description" content="${shortDescription || description[0] || nomRace}">
+    <meta name="description" content="${
+      shortDescription || description[0] || nomRace
+    }">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="../../favicon.png" type="image/png">
     <link rel="stylesheet" href="../../style.css">
@@ -177,9 +199,14 @@ const finalHtml = `<!DOCTYPE html>
     <canvas id="particles"></canvas>
     <header class="codex-header">
         <div class="illustration-wrapper">
-          ${images.slice(1).map(img => `
+          ${images
+            .slice(1)
+            .map(
+              (img) => `
         <img src="${img}" alt="Illustration ${nomRace}" class="illustration-race" onclick="openLightbox(this.src)">
-        `).join("\n")} 
+        `
+            )
+            .join("\n")} 
         </div>
         <h1>
           <img src="../../assets/images/race-icons/${iconeRace}.png" class="image class-icon"> ${nomRace}

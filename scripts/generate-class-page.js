@@ -17,11 +17,13 @@ if (!inputPath) {
 
 const raw = fs.readFileSync(inputPath, "utf8");
 const lines = raw.split(/\r?\n/);
-const slugify = str => str.normalize("NFD")
-  .replace(/\p{Diacritic}/gu, "")
-  .toLowerCase()
-  .replace(/[^a-z0-9]+/g, "-")
-  .replace(/(^-|-$)/g, "");
+const slugify = (str) =>
+  str
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
 
 const formatCout = (val) => {
   switch (val.toLowerCase()) {
@@ -50,28 +52,28 @@ const spellSectionIcons = {
   "sorts mineurs": "cantrip.png",
   "sorts de premier niveau": "spell-slot1.png",
   "sorts de second niveau": "spell-slot2.png",
-  "sorts de troisième niveau": "spell-slot3.png"
+  "sorts de troisième niveau": "spell-slot3.png",
 };
-
 
 const classIcons = {
-  "Souverain": "souverain",
-  "Envouteur": "envouteur",
-  "Imperial": "imperial",
-  "Lansquenet": "lansquenet",
+  Souverain: "souverain",
+  Envouteur: "envouteur",
+  Imperial: "imperial",
+  Lansquenet: "lansquenet",
   "Mage guerrier": "mage-guerrier",
-  "Moine": "moine",
-  "Necromancien": "necromancien",
-  "Shogun": "shogun",
-  "Heraut": "heraut",
-  "Dragoon": "dragoon",
-  "Vagabond": "vagabond",
-  "Troubadour": "troubadour",
-  "Pistolero": "pistolero"
+  Moine: "moine",
+  Necromancien: "necromancien",
+  Shogun: "shogun",
+  Heraut: "heraut",
+  Dragoon: "dragoon",
+  Vagabond: "vagabond",
+  Troubadour: "troubadour",
+  Pistolero: "pistolero",
 };
 
-const normalizeLabel = str =>
-  str.normalize("NFD")
+const normalizeLabel = (str) =>
+  str
+    .normalize("NFD")
     .replace(/\p{Diacritic}/gu, "")
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
@@ -83,10 +85,10 @@ const rawDetailIcons = {
   "DD des jets de sauvegarde": "saving-throw-dc",
   "Précision des sorts": "spell-accuracy",
   "Modificateur d'attaque magique": "spellcasting-mod",
-  "Maîtrises": "masteries",
+  Maîtrises: "masteries",
   "Jets de sauvegarde": "saving-throw",
-  "Compétences": "skills",
-  "Équipement de départ": "starting-equipment"
+  Compétences: "skills",
+  "Équipement de départ": "starting-equipment",
 };
 
 const detailIcons = {};
@@ -114,7 +116,10 @@ for (let i = 0; i < lines.length; i++) {
 
   if (line.startsWith("# ")) {
     nomClasse = line.replace("# ", "").trim();
-    const nomClasseSansAccent = nomClasse.normalize("NFD").replace(/\p{Diacritic}/gu, "").trim();
+    const nomClasseSansAccent = nomClasse
+      .normalize("NFD")
+      .replace(/\p{Diacritic}/gu, "")
+      .trim();
     iconeClasse = classIcons[nomClasseSansAccent] || "default";
   } else if (line.startsWith("![")) {
     const match = line.match(/\((.*?)\)/);
@@ -129,12 +134,12 @@ for (let i = 0; i < lines.length; i++) {
     const titre = line.replace(/^##\s+/, "").trim();
     const id = slugify(titre);
     const lower = titre.toLowerCase();
-  
+
     if (spellSectionIcons[lower]) {
       currentSortSection = {
         id,
         titre,
-        sorts: []
+        sorts: [],
       };
       sortSections.push(currentSortSection);
       section = "sorts"; // nouvelle catégorie logique
@@ -151,51 +156,70 @@ for (let i = 0; i < lines.length; i++) {
         nom,
         icone: "",
         cout: "",
-        description: []
+        description: [],
       });
-    } else if (section === "aptitudes") {  
+    } else if (section === "aptitudes") {
       if (currentAptitude) aptitudes.push(currentAptitude);
       currentAptitude = {
         id: slugify(line.replace("### ", "")),
         nom: line.replace("### ", "").trim(),
         icone: "",
         cout: "",
-        description: []
+        description: [],
       };
     } else if (section === "specialisations") {
-      if (currentSpecAptitude && currentSpec) currentSpec.aptitudes.push(currentSpecAptitude);
+      if (currentSpecAptitude && currentSpec)
+        currentSpec.aptitudes.push(currentSpecAptitude);
       if (currentSpec) specialisations.push(currentSpec);
       currentSpecAptitude = null;
       currentSpec = {
         nom: line.replace("### ", "").trim(),
         id: slugify(line.replace("### ", "")),
         icone: "",
-        aptitudes: []
+        aptitudes: [],
       };
     }
-  } else if (line.toLowerCase().startsWith("icone:") && currentSpec && !currentSpecAptitude) {
+  } else if (
+    line.toLowerCase().startsWith("icone:") &&
+    currentSpec &&
+    !currentSpecAptitude
+  ) {
     currentSpec.icone = line.split(":")[1].trim();
-  } else if (line.startsWith("#### ") && section === "specialisations" && currentSpec) {
+  } else if (
+    line.startsWith("#### ") &&
+    section === "specialisations" &&
+    currentSpec
+  ) {
     if (currentSpecAptitude) currentSpec.aptitudes.push(currentSpecAptitude);
     currentSpecAptitude = {
       id: slugify(line.replace("### ", "")),
       nom: line.replace("#### ", "").trim(),
       icone: "",
       cout: "",
-      description: []
+      description: [],
     };
   } else if (line.toLowerCase().startsWith("icone:")) {
-    if (section === "aptitudes" && currentAptitude) currentAptitude.icone = line.split(":")[1].trim();
-    if (section === "specialisations" && currentSpecAptitude) currentSpecAptitude.icone = line.split(":")[1].trim();
+    if (section === "aptitudes" && currentAptitude)
+      currentAptitude.icone = line.split(":")[1].trim();
+    if (section === "specialisations" && currentSpecAptitude)
+      currentSpecAptitude.icone = line.split(":")[1].trim();
     if (section === "sorts" && currentSortSection?.sorts?.length > 0) {
-      currentSortSection.sorts[currentSortSection.sorts.length - 1].icone = line.split(":")[1].trim();
-    }    
-  } else if (line.toLowerCase().startsWith("coût:") || line.toLowerCase().startsWith("cout:")) {
+      currentSortSection.sorts[currentSortSection.sorts.length - 1].icone = line
+        .split(":")[1]
+        .trim();
+    }
+  } else if (
+    line.toLowerCase().startsWith("coût:") ||
+    line.toLowerCase().startsWith("cout:")
+  ) {
     const rawCout = line.split(":")[1].trim();
-    if (section === "aptitudes" && currentAptitude) currentAptitude.cout = formatCout(rawCout);
-    if (section === "specialisations" && currentSpecAptitude) currentSpecAptitude.cout = formatCout(rawCout);
+    if (section === "aptitudes" && currentAptitude)
+      currentAptitude.cout = formatCout(rawCout);
+    if (section === "specialisations" && currentSpecAptitude)
+      currentSpecAptitude.cout = formatCout(rawCout);
     if (section === "sorts" && currentSortSection?.sorts?.length > 0) {
-      currentSortSection.sorts[currentSortSection.sorts.length - 1].cout = formatCout(rawCout);
+      currentSortSection.sorts[currentSortSection.sorts.length - 1].cout =
+        formatCout(rawCout);
     }
   } else if (section === "details" && line.startsWith("- ")) {
     const detailMatch = line.match(/- \*\*(.+?)\*\*:? ?(.*)/);
@@ -205,7 +229,9 @@ for (let i = 0; i < lines.length; i++) {
 
       const iconName = detailIcons[normalizeLabel(label)] || null;
 
-      const iconHTML = iconName ? `<img src="../../assets/images/class-details/${iconName}.png" class="image details-icon"> ` : "";
+      const iconHTML = iconName
+        ? `<img src="../../assets/images/class-details/${iconName}.png" class="image details-icon"> `
+        : "";
 
       details.push(`<strong>${iconHTML}${label} :</strong> ${value}`);
     } else {
@@ -221,14 +247,21 @@ for (let i = 0; i < lines.length; i++) {
     currentAptitude.description.push(line);
   } else if (section === "specialisations" && currentSpecAptitude && line) {
     currentSpecAptitude.description.push(line);
-  } else if (section === "sorts" && currentSortSection?.sorts?.length > 0 && line) {
-    const currentSort = currentSortSection.sorts[currentSortSection.sorts.length - 1];
-    const dataMatch = line.match(/Temps d'incantation\s*:\s*(.+?),\s*Portée\s*:\s*(.+?),\s*Composants\s*:\s*(.+?),\s*Durée\s*:\s*(.+?),\s*Attaque\/Sauvegarde\s*:\s*(.+)/i);
+  } else if (
+    section === "sorts" &&
+    currentSortSection?.sorts?.length > 0 &&
+    line
+  ) {
+    const currentSort =
+      currentSortSection.sorts[currentSortSection.sorts.length - 1];
+    const dataMatch = line.match(
+      /Temps d'incantation\s*:\s*(.+?),\s*Portée\s*:\s*(.+?),\s*Composants\s*:\s*(.+?),\s*Durée\s*:\s*(.+?),\s*Attaque\/Sauvegarde\s*:\s*(.+)/i
+    );
 
     if (dataMatch) {
       const [_, cast, range, comp, duration, save] = dataMatch;
       const iconPath = "../../assets/images/spell-details";
-    
+
       currentSort.description.push(`<div class="spell-data-icons">
         <div class="spell-info-block"><img src="${iconPath}/cast-time.png" title="Temps d'incantation" class="spell-info-icon cast-time"> ${cast}</div>
         <div class="spell-info-block"><img src="${iconPath}/range.png" title="Portée" class="spell-info-icon"> ${range}</div>
@@ -239,17 +272,22 @@ for (let i = 0; i < lines.length; i++) {
     } else {
       currentSort.description.push(line);
     }
-    
-  }  
+  }
 }
 if (currentAptitude) aptitudes.push(currentAptitude);
-if (currentSpecAptitude && currentSpec) currentSpec.aptitudes.push(currentSpecAptitude);
+if (currentSpecAptitude && currentSpec)
+  currentSpec.aptitudes.push(currentSpecAptitude);
 if (currentSpec) specialisations.push(currentSpec);
 
-const nomClasseSansAccent = nomClasse.normalize("NFD").replace(/\p{Diacritic}/gu, "");
+const nomClasseSansAccent = nomClasse
+  .normalize("NFD")
+  .replace(/\p{Diacritic}/gu, "");
 
 // Lecture du tableau de progression, si disponible
-const tablePath = path.resolve(__dirname, `../progressions/progression-${slugify(nomClasse)}.html`);
+const tablePath = path.resolve(
+  __dirname,
+  `../progressions/progression-${slugify(nomClasse)}.html`
+);
 let tableHTML = "";
 if (fs.existsSync(tablePath)) {
   tableHTML = fs.readFileSync(tablePath, "utf8");
@@ -258,34 +296,75 @@ if (fs.existsSync(tablePath)) {
 const navLinks = [
   { href: "#details", label: "Détails" },
   { href: "#aptitudes", label: "Aptitudes" },
-  ...aptitudes.map(a => ({ href: `#${a.id}`, label: a.nom })),
-  ...(specialisations.length > 0 ? [{ href: "#specialisations", label: "Spécialisations" }] : []),
-  ...specialisations.flatMap(spec => [
+  ...aptitudes.map((a) => ({ href: `#${a.id}`, label: a.nom })),
+  ...(specialisations.length > 0
+    ? [{ href: "#specialisations", label: "Spécialisations" }]
+    : []),
+  ...specialisations.flatMap((spec) => [
     { href: `#${spec.id}`, label: spec.nom },
-    ...spec.aptitudes.map(a => ({ href: `#${a.id}`, label: a.nom }))
+    ...spec.aptitudes.map((a) => ({ href: `#${a.id}`, label: a.nom })),
   ]),
   // Ajoute ici les sections de sorts AVANT la progression
-  ...sortSections.flatMap(section => [
+  ...sortSections.flatMap((section) => [
     { href: `#${section.id}`, label: section.titre },
-    ...section.sorts.map(sort => ({ href: `#${sort.id}`, label: sort.nom }))
+    ...section.sorts.map((sort) => ({ href: `#${sort.id}`, label: sort.nom })),
   ]),
-  { href: "#tab-general", label: "Progression par niveau" }
+  { href: "#tab-general", label: "Progression par niveau" },
 ];
 
-const sectionsPrincipales = ["#details", "#aptitudes", "#specialisations", "#sorts-mineurs", "#sorts-de-premier-niveau", "#sorts-de-second-niveau", "#sorts-de-troisieme-niveau",
-"#tab-general", "#magierkaiser", "#arztkaiser", "#starkekaiser", "#devouement-au-controle", "#devouement-a-la-restreinte", "#devouement-a-la-vengeance", "#serment-de-destruction",
-"#serment-de-protection", "#maitre-des-epees", "#maitre-des-haches", "#maitre-des-boucliers", "#pacte-de-l-evoqueur", "#pacte-du-courtier", "#ecole-du-commandement", "#ecole-de-l-offense",
-"#ecole-du-seigneur-de-guerre", "#porteur-de-mort", "#garde-de-la-mort", "#voile-de-la-mort", "#porteur-de-canon", "#porteur-de-bouclier", "#faucon", "#loup", "#allegro", "#moderato",
-"#adagio"];
+const sectionsPrincipales = [
+  "#details",
+  "#aptitudes",
+  "#specialisations",
+  "#sorts-mineurs",
+  "#sorts-de-premier-niveau",
+  "#sorts-de-second-niveau",
+  "#sorts-de-troisieme-niveau",
+  "#tab-general",
+  "#magierkaiser",
+  "#arztkaiser",
+  "#starkekaiser",
+  "#devouement-au-controle",
+  "#devouement-a-la-restreinte",
+  "#devouement-a-la-vengeance",
+  "#serment-de-destruction",
+  "#serment-de-protection",
+  "#maitre-des-epees",
+  "#maitre-des-haches",
+  "#maitre-des-boucliers",
+  "#pacte-de-l-evoqueur",
+  "#pacte-du-courtier",
+  "#ecole-du-commandement",
+  "#ecole-de-l-offense",
+  "#ecole-du-seigneur-de-guerre",
+  "#porteur-de-mort",
+  "#garde-de-la-mort",
+  "#voile-de-la-mort",
+  "#porteur-de-canon",
+  "#porteur-de-bouclier",
+  "#faucon",
+  "#loup",
+  "#allegro",
+  "#moderato",
+  "#adagio",
+];
 
-const navHTML = `\n<div class="class-nav">\n  ${navLinks.map(l => {
-  const cls = sectionsPrincipales.includes(l.href) ? 'section-link' : 'sub-link';
-  return `<a href="${l.href}" class="${cls}">${l.label}</a>`;
-}).join("\n  ")}\n</div>`;
+const navHTML = `\n<div class="class-nav">\n  ${navLinks
+  .map((l) => {
+    const cls = sectionsPrincipales.includes(l.href)
+      ? "section-link"
+      : "sub-link";
+    return `<a href="${l.href}" class="${cls}">${l.label}</a>`;
+  })
+  .join("\n  ")}\n</div>`;
 
-const detailsHTML = details.map(item => `<li><div class="image-texte">${item}</div></li>`).join("\n");
+const detailsHTML = details
+  .map((item) => `<li><div class="image-texte">${item}</div></li>`)
+  .join("\n");
 
-const aptitudesHTML = aptitudes.map(a => `
+const aptitudesHTML = aptitudes
+  .map(
+    (a) => `
   <article id="${a.id}">
   <h3>
     <img src="${a.icone}" class="image skill-icon">
@@ -293,9 +372,13 @@ const aptitudesHTML = aptitudes.map(a => `
     <span>${a.cout}</span>
   </h3>
     <p>${a.description.join(" ")}</p>
-  </article>`).join("\n");
+  </article>`
+  )
+  .join("\n");
 
-const specialisationsHTML = specialisations.map(spec => `
+const specialisationsHTML = specialisations
+  .map(
+    (spec) => `
   <section class="patch-section">
   <div class="toggle-section">
     <h2 class="patch-titre" id="${spec.id}">
@@ -306,7 +389,9 @@ const specialisationsHTML = specialisations.map(spec => `
     </div>
     <div class="collapsible-content expanded">
     <div class="patch-list">
-      ${spec.aptitudes.map(a => `
+      ${spec.aptitudes
+        .map(
+          (a) => `
         <article id="${a.id}">
         <h3>
           <img src="${a.icone}" class="image skill-icon">
@@ -314,23 +399,33 @@ const specialisationsHTML = specialisations.map(spec => `
           <span>${a.cout}</span>
         </h3>
           <p>${a.description.join(" ")}</p>
-        </article>`).join("\n")}
+        </article>`
+        )
+        .join("\n")}
     </div>
     </div>
-  </section>`).join("\n");
+  </section>`
+  )
+  .join("\n");
 
-  const sortsHTML = sortSections.map(section => `
+const sortsHTML = sortSections
+  .map(
+    (section) => `
     <section class="patch-section">
       <div class="toggle-section">
         <h2 class="patch-titre" id="${section.id}">
-          <img src="../../assets/images/action-costs/${spellSectionIcons[section.titre.toLowerCase()]}" class="image image-h2">
+          <img src="../../assets/images/action-costs/${
+            spellSectionIcons[section.titre.toLowerCase()]
+          }" class="image image-h2">
           ${section.titre}
           <button class="toggle-button" onclick="toggleSection(this)">▲</button>
         </h2>
     </div>
     <div class="collapsible-content expanded">
       <div class="patch-list">
-        ${section.sorts.map(s => `
+        ${section.sorts
+          .map(
+            (s) => `
         <article id="${s.id}">
         <h3>
           <img src="${s.icone}" class="image skill-icon">
@@ -338,16 +433,22 @@ const specialisationsHTML = specialisations.map(spec => `
           <span>${s.cout}</span>
         </h3>
           <p>${s.description.join(" ")}</p>
-        </article>`).join("\n")}
+        </article>`
+          )
+          .join("\n")}
       </div>
-    </section>`).join("\n");  
+    </section>`
+  )
+  .join("\n");
 
 const finalHtml = `<!DOCTYPE html>
 <html lang="fr">
   <head>
     <meta charset="UTF-8">
     <title>${nomClasse} | Codex - Etrian Odyssey TTRPG</title>
-    <meta name="description" content="${shortDescription || description[0] || nomClasse}">
+    <meta name="description" content="${
+      shortDescription || description[0] || nomClasse
+    }">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="../../favicon.png" type="image/png">
     <link rel="stylesheet" href="../../style.css">
@@ -356,9 +457,14 @@ const finalHtml = `<!DOCTYPE html>
   <body>
     <canvas id="particles"></canvas> ${navHTML} <header class="codex-header">
       <div class="illustration-wrapper">
-      ${images.slice(1).map(img => `
+      ${images
+        .slice(1)
+        .map(
+          (img) => `
           <img src="${img}" alt="Illustration ${nomClasse}" class="illustration-classe" onclick="openLightbox(this.src)">
-        `).join("\n")} 
+        `
+        )
+        .join("\n")} 
         </div>
         <h1>
           <img src="../../assets/images/class-icons/${iconeClasse}.png" class="image class-icon"> ${nomClasse}
@@ -449,7 +555,14 @@ const finalHtml = `<!DOCTYPE html>
     <script src="../../scripts/backToTop.js"></script>
     <button class="mobile-nav-toggle" onclick="toggleMobileNav(this)">☰</button>
     <div class="mobile-nav-overlay" id="mobileNav">
-      <div class="mobile-nav-content"> ${navLinks.map(l => { const cls = sectionsPrincipales.includes(l.href) ? 'section-link' : 'sub-link'; return ` <a href="${l.href}" class="${cls}" onclick="toggleMobileNav()">${l.label}</a>`; }).join("\n")} </div>
+      <div class="mobile-nav-content"> ${navLinks
+        .map((l) => {
+          const cls = sectionsPrincipales.includes(l.href)
+            ? "section-link"
+            : "sub-link";
+          return ` <a href="${l.href}" class="${cls}" onclick="toggleMobileNav()">${l.label}</a>`;
+        })
+        .join("\n")} </div>
     </div>
   </body>
 </html>`;

@@ -9,9 +9,12 @@ const footerHTML = fs.readFileSync(footerPath, "utf8");
 const notesDir = path.join(__dirname, "../output/notes");
 const outputPath = path.join(notesDir, "index.html");
 
-const patchFiles = fs.readdirSync(notesDir)
-  .filter(f => /^patch-.*\.html$/.test(f))
-  .sort((a, b) => b.localeCompare(a, undefined, { numeric: true, sensitivity: "base" }));
+const patchFiles = fs
+  .readdirSync(notesDir)
+  .filter((f) => /^patch-.*\.html$/.test(f))
+  .sort((a, b) =>
+    b.localeCompare(a, undefined, { numeric: true, sensitivity: "base" })
+  );
 
 let cartesHtml = "";
 
@@ -20,8 +23,8 @@ for (const file of patchFiles) {
   const content = fs.readFileSync(filePath, "utf8");
   const $ = cheerio.load(content);
 
-  const fullTitle = $('title').text().trim();
-  const titre = fullTitle.split('|')[0].trim();
+  const fullTitle = $("title").text().trim();
+  const titre = fullTitle.split("|")[0].trim();
   const date = $(".sous-titre").text();
 
   cartesHtml += `
@@ -32,7 +35,8 @@ for (const file of patchFiles) {
   </a>`;
 }
 
-const finalHtml = `<!DOCTYPE html>
+const finalHtml =
+  `<!DOCTYPE html>
 <html lang="fr">
   <head>
     <meta charset="UTF-8">
@@ -64,7 +68,9 @@ const finalHtml = `<!DOCTYPE html>
       <button class="btn-lu" id="tout-lu">
         <img src="../assets/images/icon_checkbox.png" class="image mark-as-read-btn"> Tout marquer comme lu
       </button>
-    </div> ` + cartesHtml + ` <div style="text-align: center; margin-top: 3rem;"></div>
+    </div> ` +
+  cartesHtml +
+  ` <div style="text-align: center; margin-top: 3rem;"></div>
     </main>
     <button id="backToTop" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" aria-label="Retour en haut"><i class="fa-solid fa-arrow-up"></i> Retour en haut</button>
     

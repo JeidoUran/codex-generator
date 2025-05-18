@@ -1,13 +1,14 @@
-
 const fs = require("fs");
 const path = require("path");
 const cheerio = require("cheerio");
 
-const slugify = str => str.normalize("NFD")
-  .replace(/\p{Diacritic}/gu, "")
-  .toLowerCase()
-  .replace(/[^a-z0-9]+/g, "-")
-  .replace(/(^-|-$)/g, "");
+const slugify = (str) =>
+  str
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
 
 const racesDir = path.join(__dirname, "../output/races");
 const outputPath = path.join(racesDir, "index.html");
@@ -15,8 +16,9 @@ const outputPath = path.join(racesDir, "index.html");
 const footerPath = path.join(__dirname, "footer.html");
 const footerHTML = fs.readFileSync(footerPath, "utf8");
 
-const raceFiles = fs.readdirSync(racesDir)
-  .filter(f => f.endsWith(".html") && f !== "index.html");
+const raceFiles = fs
+  .readdirSync(racesDir)
+  .filter((f) => f.endsWith(".html") && f !== "index.html");
 
 const raceCards = [];
 
@@ -25,10 +27,12 @@ for (const file of raceFiles) {
   const content = fs.readFileSync(filePath, "utf8");
   const $ = cheerio.load(content);
 
-  const fullTitle = $('title').text().trim();
-  const titre = fullTitle.split('|')[0].trim();
+  const fullTitle = $("title").text().trim();
+  const titre = fullTitle.split("|")[0].trim();
   const slug = slugify(titre);
-  const desc = $('meta[name="description"]').attr("content") || "Cette race n'a pas encore de description.";
+  const desc =
+    $('meta[name="description"]').attr("content") ||
+    "Cette race n'a pas encore de description.";
   const imageName = file.replace(/\.html$/, ".png");
   const imagePath = `../../assets/images/race-icons/${imageName}`;
 
@@ -39,12 +43,12 @@ for (const file of raceFiles) {
         <img src="${imagePath}" alt="${titre}" class="image class-icon">
         <h2>${titre}</h2>
         <p>${desc}</p>
-      </a>`
+      </a>`,
   });
 }
 
 raceCards.sort((a, b) => a.slug.localeCompare(b.slug));
-const cartesHtml = raceCards.map(c => c.html).join("\n");
+const cartesHtml = raceCards.map((c) => c.html).join("\n");
 
 const finalHtml = `<!DOCTYPE html>
 <html lang="fr">

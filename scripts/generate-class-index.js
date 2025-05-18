@@ -3,17 +3,29 @@ const path = require("path");
 const cheerio = require("cheerio");
 
 // Utilitaire de slug
-const slugify = str => str.normalize("NFD")
-  .replace(/\p{Diacritic}/gu, "")
-  .toLowerCase()
-  .replace(/[^a-z0-9]+/g, "-")
-  .replace(/(^-|-$)/g, "");
+const slugify = (str) =>
+  str
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
 
 // Ordre voulu
 const ordreClasses = [
-  "Souverain", "Envouteur", "Impérial", "Lansquenet",
-  "Mage guerrier", "Moine", "Necromancien", "Shogun",
-  "Heraut", "Dragoon", "Vagabond", "Troubadour", "Pistolero"
+  "Souverain",
+  "Envouteur",
+  "Impérial",
+  "Lansquenet",
+  "Mage guerrier",
+  "Moine",
+  "Necromancien",
+  "Shogun",
+  "Heraut",
+  "Dragoon",
+  "Vagabond",
+  "Troubadour",
+  "Pistolero",
 ].map(slugify);
 
 const classesDir = path.join(__dirname, "../output/classes");
@@ -22,8 +34,9 @@ const outputPath = path.join(classesDir, "index.html");
 const footerPath = path.join(__dirname, "footer.html");
 const footerHTML = fs.readFileSync(footerPath, "utf8");
 
-const classFiles = fs.readdirSync(classesDir)
-  .filter(f => f.endsWith(".html") && f !== "index.html");
+const classFiles = fs
+  .readdirSync(classesDir)
+  .filter((f) => f.endsWith(".html") && f !== "index.html");
 
 const classCards = [];
 
@@ -32,10 +45,12 @@ for (const file of classFiles) {
   const content = fs.readFileSync(filePath, "utf8");
   const $ = cheerio.load(content);
 
-  const fullTitle = $('title').text().trim();
-  const titre = fullTitle.split('|')[0].trim();
+  const fullTitle = $("title").text().trim();
+  const titre = fullTitle.split("|")[0].trim();
   const slug = slugify(titre);
-  const desc = $('meta[name="description"]').attr("content") || "Cette classe n'a pas encore de description.";
+  const desc =
+    $('meta[name="description"]').attr("content") ||
+    "Cette classe n'a pas encore de description.";
   const isWip = /wip|work in progress|under construction/i.test(desc);
   const imageName = file.replace(/\.html$/, ".png");
   const imagePath = `../../assets/images/class-icons/${imageName}`;
@@ -48,7 +63,7 @@ for (const file of classFiles) {
           <img src="${imagePath}" alt="${titre}" class="image class-icon">
           <h2>${titre}</h2>
           <p>${desc}</p>
-        </a>`
+        </a>`,
     });
   } else {
     classCards.push({
@@ -59,9 +74,11 @@ for (const file of classFiles) {
           <img src="${imagePath}" alt="${titre}" class="image class-icon">
           <h2>${titre}</h2>
           <p>${desc}</p>
-      </a> -->`
+      </a> -->`,
     });
-    console.log(titre + " est marqué comme WiP. Sera commenté sur la page de sortie.");
+    console.log(
+      titre + " est marqué comme WiP. Sera commenté sur la page de sortie."
+    );
   }
 }
 
@@ -72,7 +89,7 @@ classCards.sort((a, b) => {
   return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
 });
 
-const cartesHtml = classCards.map(c => c.html).join("\n");
+const cartesHtml = classCards.map((c) => c.html).join("\n");
 
 const finalHtml = `<!DOCTYPE html>
 <html lang="fr">
