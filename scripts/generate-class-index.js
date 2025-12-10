@@ -112,6 +112,7 @@ const finalHtml = `<!DOCTYPE html>
     <nav class="nav-magique">
       <a href="/">Accueil</a>
       <a href="../../notes/">Patch Notes</a>
+      <a href="../../resumes/">Résumés</a>
       <a href="../../regles/">Règles</a>
       <a href="../../univers/">Univers</a>
       <a href="../../musique">Musiques</a>
