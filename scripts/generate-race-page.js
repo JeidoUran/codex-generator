@@ -221,13 +221,14 @@ const finalHtml = `<!DOCTYPE html>
       <a href="/">Accueil</a>
       <a href="../../notes/">Patch Notes</a>
       <a href="../../resumes/">Résumés</a>
-      <a href="../../regles/">Règles</a>
+      <a href="../../moments">Moments</a>
       <a href="../../univers/">Univers</a>
+      <a href="../../regles/">Règles</a>
       <a href="../../musique">Musiques</a>
       <a href="../../ressources/">Ressources</a>
       <a href="../../credits">Crédits</a>
     </nav>
-
+    
     <main class="accueil">
       <section class="intro-collapsible click" id="intro">
         <p>${description.join(" ")} </p>
