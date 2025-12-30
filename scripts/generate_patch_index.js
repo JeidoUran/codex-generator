@@ -110,6 +110,7 @@ const finalHtml =
     </script>
     <script src="../scripts/particles.js"></script>
     <script src="../scripts/backToTop.js"></script>
+    <script src="/scripts/codex-global.js" defer></script>
   </body>
 </html>`;
 

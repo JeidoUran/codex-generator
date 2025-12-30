@@ -555,6 +555,7 @@ const finalHtml = `<!DOCTYPE html>
     <script src="../../scripts/lightbox.js"></script>
     <script src="../../scripts/particles.js"></script>
     <script src="../../scripts/backToTop.js"></script>
+    <script src="/scripts/codex-global.js" defer></script>
     <button class="mobile-nav-toggle" onclick="toggleMobileNav(this)">☰</button>
     <div class="mobile-nav-overlay" id="mobileNav">
       <div class="mobile-nav-content"> ${navLinks

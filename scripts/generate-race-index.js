@@ -88,6 +88,7 @@ const finalHtml = `<!DOCTYPE html>
     <button id="backToTop" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" aria-label="Retour en haut"><i class="fa-solid fa-arrow-up"></i> Retour en haut</button>
     ${footerHTML}
     <script src="../../scripts/particles.js"></script>
+    <script src="/scripts/codex-global.js" defer></script>
     <!--<script>
       const searchInput = document.getElementById("search-bar");
       const cards = document.querySelectorAll(".class-card");
